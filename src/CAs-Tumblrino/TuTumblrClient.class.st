@@ -79,3 +79,138 @@ Newly registered consumers are rate limited to 1,000 requests per hour, and 5,00
 
 	
 ]
+
+{ #category : #'as yet unclassified' }
+TuTumblrClient >> accToken [
+	"self halt."
+
+	^ ZnOAuth1Token new
+		value: (self class keys at: 'Token');
+		secret: (self class keys at: 'Token Secret')
+	"Token XXXXXXXX
+Token Secret XXXXXXXX"
+]
+
+{ #category : #'as yet unclassified' }
+TuTumblrClient >> api [
+	^ ZnUrl fromString: 'http://api.tumblr.com/v2'
+]
+
+{ #category : #'as yet unclassified' }
+TuTumblrClient >> apiKey [
+	^ self consumerKey
+]
+
+{ #category : #'as yet unclassified' }
+TuTumblrClient >> blogInfo [
+	| url json blog |
+	url := self api / 'blog' / 'googleme420.tumblr.com' / 'info'.
+	json := self getUrl: url.
+	blog := json at: 'blog'.
+	blog := TuTumblrBlog from: (json at: #blog).
+	^ blog
+]
+
+{ #category : #'as yet unclassified' }
+TuTumblrClient >> consumerData [
+	^ consData
+		ifNil: [ consData := ZnOAuth1ConsumerData new
+				getRequestTokenUrl: 'https://www.tumblr.com/oauth/request_token';
+				authorizeTokenUrl: 'https://www.tumblr.com/oauth/authorize';
+				getAccessTokenUrl: 'https://www.tumblr.com/oauth/access_token';
+				consumer: self consumerKey;
+				consumerSecret: self secretKey ]
+]
+
+{ #category : #'as yet unclassified' }
+TuTumblrClient >> consumerKey [
+	^ 'XXXXXXXX'
+]
+
+{ #category : #'as yet unclassified' }
+TuTumblrClient >> consumerSecret [
+	^ self secretKey
+]
+
+{ #category : #'as yet unclassified' }
+TuTumblrClient >> getTokenFromCallbackUrl: aUrl [
+	| ver |
+	ver := aUrl asUrl query at: 'oauth_verifier'.
+	^ ver
+]
+
+{ #category : #'as yet unclassified' }
+TuTumblrClient >> getUrl: aUrl [
+	| response json |
+	response := (self service httpGet: aUrl using: self accToken)
+		asString.
+	json := NeoJSONReader fromString: response.
+	((json at: #meta) at: #status) ~= 200
+		ifTrue: [ Error signal: 'Failed' ].
+	^ json at: #response
+]
+
+{ #category : #'as yet unclassified' }
+TuTumblrClient >> likes [
+	| likeNo url json liked all likedpost |
+	likeNo := self userInfo likes.
+	all := OrderedCollection new.
+	0 to: likeNo by: 20 do: [ :i | 
+		"Transcript crShow: i printString , '*'."
+		url := ZnUrl
+			fromString:
+				'http://api.tumblr.com/v2/user/likes?npf=true&limit=20&offset='
+					, i printString.
+		json := self getUrl: url.
+		liked := json at: #liked_posts.
+		"Transcript crShow: liked size printString."
+		liked
+			do: [ :like | 
+				likedpost := TuTumblrPostNpf from: like.
+				all add: likedpost ] ].
+	^ all
+]
+
+{ #category : #'as yet unclassified' }
+TuTumblrClient >> postUrl: aUrl [
+	| response json |
+	response := (self service
+		httpPost: aUrl
+		with: nil
+		using: self accToken) asString.
+	json := NeoJSONReader fromString: response.
+	((json at: #meta) at: #status) ~= 200
+		ifTrue: [ Error signal: 'Failed' ].
+	^ json at: #response
+]
+
+{ #category : #'as yet unclassified' }
+TuTumblrClient >> secretKey [
+	^ 'XXXXXXX'
+]
+
+{ #category : #'as yet unclassified' }
+TuTumblrClient >> service [
+	^ oauth1Service
+		ifNil: [ oauth1Service := ZnOAuth1Service new
+				providerAccount: self consumerData;
+				yourself ]
+]
+
+{ #category : #'as yet unclassified' }
+TuTumblrClient >> unlike: aPost [
+	| url |
+	url := self api / 'user/unlike'.
+	url := url ? ('id' -> aPost id) & ('reblog_key' -> aPost reblog_key).
+	self postUrl: url.
+	^ self
+]
+
+{ #category : #'as yet unclassified' }
+TuTumblrClient >> userInfo [
+	| url json user |
+	url := ZnUrl fromString: 'http://api.tumblr.com/v2/user/info'.
+	json := self getUrl: url.
+	user := TuTumblrUser from: (json at: #user).
+	^ user
+]
