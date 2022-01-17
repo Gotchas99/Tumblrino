@@ -34,16 +34,27 @@ Token Secret XXXXXX
 
 { #category : #accessing }
 TuTumblrClient class >> keys [
-	| lines keys parts val key |
-	lines := self keyString lines collect: #trim thenReject: #isEmpty.
+
+	| lines keys parts val key str |
+"	str:= self keyString."
+	str:= self readKeys.
+	lines := str lines collect: #trim thenReject: #isEmpty.
 	keys := Dictionary new.
-	lines
-		do: [ :each | 
-			parts := ' ' split: each.
-			val := parts last.
-			key := ' ' join: parts allButLast.
-			keys at: key put: val ].
+	lines do: [ :each | 
+		parts := ' ' split: each.
+		val := parts last.
+		key := ' ' join: parts allButLast.
+		keys at: key put: val ].
 	^ keys
+]
+
+{ #category : #accessing }
+TuTumblrClient class >> readKeys [
+
+	| fname str |
+	fname := 'D:\Temp\tumblr\Tumblr_API.txt'.
+	str := fname asFileReference contents.
+	^ str 
 ]
 
 { #category : #accessing }
