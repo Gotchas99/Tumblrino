@@ -6,7 +6,7 @@ Class {
 		'forms',
 		'stream'
 	],
-	#category : #'CAs-Tumblrino'
+	#category : #'CAs-Tumblrino-Core'
 }
 
 { #category : #'as yet unclassified' }

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'json'
 	],
-	#category : #'CAs-Tumblrino'
+	#category : #'CAs-Tumblrino-Core'
 }
 
 { #category : #'instance creation' }

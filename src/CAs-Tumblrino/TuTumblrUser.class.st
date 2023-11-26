@@ -1,7 +1,7 @@
 Class {
 	#name : #TuTumblrUser,
 	#superclass : #TuTumblrObject,
-	#category : #'CAs-Tumblrino'
+	#category : #'CAs-Tumblrino-Core'
 }
 
 { #category : #'as yet unclassified' }

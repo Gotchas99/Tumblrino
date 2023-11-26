@@ -26,9 +26,10 @@ ZipExtraction >> getPostsFrom: aZipArchiveName [
 
 { #category : #initialization }
 ZipExtraction >> initialize [
-	basePath := 'E:\Temp\Tumblr\_Export'.
+
+	basePath := 'D:\Temp\TumblrLibrary\_Export'.
 	mediaFolder := (basePath asFileReference / 'media')
-		ensureCreateDirectory.
+		               ensureCreateDirectory.
 	xmlFolder := (basePath asFileReference / 'xml') ensureCreateDirectory
 ]
 

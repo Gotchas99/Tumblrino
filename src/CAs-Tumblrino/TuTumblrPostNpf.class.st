@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'media'
 	],
-	#category : #'CAs-Tumblrino'
+	#category : #'CAs-Tumblrino-Core'
 }
 
 { #category : #accessing }

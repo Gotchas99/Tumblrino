@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'orig'
 	],
-	#category : #'CAs-Tumblrino'
+	#category : #'CAs-Tumblrino-Core'
 }
 
 { #category : #'as yet unclassified' }

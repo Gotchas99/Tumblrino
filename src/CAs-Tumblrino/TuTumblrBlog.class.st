@@ -1,5 +1,5 @@
 Class {
 	#name : #TuTumblrBlog,
 	#superclass : #TuTumblrObject,
-	#category : #'CAs-Tumblrino'
+	#category : #'CAs-Tumblrino-Core'
 }
