@@ -2,16 +2,34 @@ Class {
 	#name : #TuTumblrPostNpf,
 	#superclass : #TuTumblrObject,
 	#instVars : [
+		'id',
 		'media'
 	],
 	#category : #'CAs-Tumblrino-Core'
 }
 
+{ #category : #'as yet unclassified' }
+TuTumblrPostNpf >> blogUUID [
+
+	^ json at: #blog at: #uuid
+	
+]
+
 { #category : #accessing }
 TuTumblrPostNpf >> content [
-	"redirected to trail, as content semms empty"
 
-	^ (((json at: #trail) first at: #content) first)at:#media.
+	^ (json at: #content) 
+]
+
+{ #category : #'as yet unclassified' }
+TuTumblrPostNpf >> id [
+	^ json at: #id
+]
+
+{ #category : #accessing }
+TuTumblrPostNpf >> isLoaded [
+ 
+	^ self content isEmpty not
 ]
 
 { #category : #accessing }

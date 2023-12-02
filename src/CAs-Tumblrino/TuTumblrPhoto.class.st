@@ -1,6 +1,6 @@
 Class {
 	#name : #TuTumblrPhoto,
-	#superclass : #TuTumblrObject,
+	#superclass : #TuTumblrContent,
 	#instVars : [
 		'form',
 		'forms',

@@ -8,11 +8,6 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-TuTumblrPost >> id [
-	^ json at: #id
-]
-
-{ #category : #'as yet unclassified' }
 TuTumblrPost >> photo_orig [
 	^ orig
 		ifNil: [ orig := TuTumblrPhoto from: ((json at: #photos) first at: #original_size) ]

@@ -152,6 +152,24 @@ TuTumblrClient >> consumerSecret [
 	^ self class keys at: 'Consumer Secret'
 ]
 
+{ #category : #actions }
+TuTumblrClient >> getPost:postID from: blogID [
+
+	| likeNo url json liked all likedpost |
+	likeNo := self userInfo likes.
+	all := OrderedCollection new.
+	0 to: likeNo by: 20 do: [ :i | "Transcript crShow: i printString , '*'."
+		url := self api / 'user' / 'likes' ? ('npf' -> true)
+		       & (#limit -> 20) & (#offset -> i printString).
+		json := self getUrl: url.
+		liked := json at: #liked_posts.
+		"Transcript crShow: liked size printString."
+		liked do: [ :like | 
+			likedpost := TuTumblrPostNpf from: like.
+			all add: likedpost ] ].
+	^ all
+]
+
 { #category : #OAuth1 }
 TuTumblrClient >> getTokenFromCallbackUrl: aUrl [
 	| ver |
@@ -175,17 +193,17 @@ TuTumblrClient >> likes [
 
 	| likeNo url json liked all likedpost |
 	likeNo := self userInfo likes.
-	all := OrderedCollection new.
+	all := OrderedCollection new. 
 	0 to: likeNo by: 20 do: [ :i | "Transcript crShow: i printString , '*'."
-		url := self api /'user/likes?npf=true&limit=20&offset='
-			       , i printString.
+		url := self api / 'user' / 'likes' ? ('npf' -> true)
+		       & (#limit -> 20) & (#offset -> i printString).
 		json := self getUrl: url.
 		liked := json at: #liked_posts.
 		"Transcript crShow: liked size printString."
 		liked do: [ :like | 
 			likedpost := TuTumblrPostNpf from: like.
 			all add: likedpost ] ].
-	^ all 
+	^ all
 ]
 
 { #category : #actions }

@@ -1,8 +1,5 @@
 Class {
-	#name : #TuTumblrBlog,
+	#name : #TuTumblrContent,
 	#superclass : #TuTumblrObject,
-	#instVars : [
-		'id'
-	],
 	#category : #'CAs-Tumblrino-Core'
 }
