@@ -153,21 +153,13 @@ TuTumblrClient >> consumerSecret [
 ]
 
 { #category : #actions }
-TuTumblrClient >> getPost:postID from: blogID [
+TuTumblrClient >> getPost: postID from: blogID [
 
-	| likeNo url json liked all likedpost |
-	likeNo := self userInfo likes.
-	all := OrderedCollection new.
-	0 to: likeNo by: 20 do: [ :i | "Transcript crShow: i printString , '*'."
-		url := self api / 'user' / 'likes' ? ('npf' -> true)
-		       & (#limit -> 20) & (#offset -> i printString).
-		json := self getUrl: url.
-		liked := json at: #liked_posts.
-		"Transcript crShow: liked size printString."
-		liked do: [ :like | 
-			likedpost := TuTumblrPostNpf from: like.
-			all add: likedpost ] ].
-	^ all
+	| url json |
+	url := self api / 'blog' / blogID / #posts / postID
+	       ? ('npf' -> true).
+	json := self getUrl: url.
+	^ json
 ]
 
 { #category : #OAuth1 }

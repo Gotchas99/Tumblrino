@@ -1,7 +1,8 @@
 Class {
-	#name : #TuTumblrPhoto,
+	#name : #TuTumblrImage,
 	#superclass : #TuTumblrContent,
 	#instVars : [
+		'media',
 		'form',
 		'forms',
 		'stream'
@@ -10,29 +11,29 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-TuTumblrPhoto >> extent [
+TuTumblrImage >> extent [
 	^ (json at: #width)@(json at:#height)
 ]
 
 { #category : #'as yet unclassified' }
-TuTumblrPhoto >> filename [
+TuTumblrImage >> filename [
 	| tmp |
 	tmp := self url asUrl path.
 	^ tmp copyWithout: $/
 ]
 
 { #category : #'as yet unclassified' }
-TuTumblrPhoto >> form [
+TuTumblrImage >> form [
 	^ form ifNil: [ self getForms ]
 ]
 
 { #category : #'as yet unclassified' }
-TuTumblrPhoto >> forms [
+TuTumblrImage >> forms [
 	^ forms ifNil: [ self getForms ]
 ]
 
 { #category : #'as yet unclassified' }
-TuTumblrPhoto >> fullFilename [
+TuTumblrImage >> fullFilename [
 	| tmp root |
 	root := 'D:\Temp\tumblr\Tumblrino' asPath.
 	tmp := root / self filename.
@@ -40,7 +41,7 @@ TuTumblrPhoto >> fullFilename [
 ]
 
 { #category : #'as yet unclassified' }
-TuTumblrPhoto >> getForms [
+TuTumblrImage >> getForms [
 	(self url endsWith: '.gif')
 		ifTrue: [ forms := (AnimatedGIFReadWriter formsFromStream: self stream) forms.
 			form := forms first.
@@ -54,7 +55,7 @@ TuTumblrPhoto >> getForms [
 ]
 
 { #category : #'as yet unclassified' }
-TuTumblrPhoto >> getStream [
+TuTumblrImage >> getStream [
 	| url gifBytes gifStream fref |
 	fref := self fullFilename asFileReference.
 	fref exists
@@ -67,21 +68,21 @@ TuTumblrPhoto >> getStream [
 ]
 
 { #category : #'as yet unclassified' }
-TuTumblrPhoto >> isGif [
+TuTumblrImage >> isGif [
 	^ self url endsWith: '.gif'
 ]
 
 { #category : #'as yet unclassified' }
-TuTumblrPhoto >> stream [
+TuTumblrImage >> stream [
 	^ stream ifNil: [ self getStream ]
 ]
 
 { #category : #'as yet unclassified' }
-TuTumblrPhoto >> type [
+TuTumblrImage >> type [
 	^ json at: #type
 ]
 
 { #category : #'as yet unclassified' }
-TuTumblrPhoto >> url [
+TuTumblrImage >> url [
 	^ json at: #url
 ]

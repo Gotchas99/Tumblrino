@@ -2,7 +2,6 @@ Class {
 	#name : #TuTumblrPostNpf,
 	#superclass : #TuTumblrObject,
 	#instVars : [
-		'id',
 		'media'
 	],
 	#category : #'CAs-Tumblrino-Core'
@@ -21,15 +20,16 @@ TuTumblrPostNpf >> content [
 	^ (json at: #content) 
 ]
 
-{ #category : #'as yet unclassified' }
-TuTumblrPostNpf >> id [
-	^ json at: #id
-]
-
 { #category : #accessing }
 TuTumblrPostNpf >> isLoaded [
  
 	^ self content isEmpty not
+]
+
+{ #category : #initialization }
+TuTumblrPostNpf >> load [
+
+	
 ]
 
 { #category : #accessing }
@@ -44,5 +44,5 @@ TuTumblrPostNpf >> parseJson [
 	tags := self content.
 	tags isDictionary
 		ifTrue: [ tags := Array with: tags ].
-	media := tags collect: [ :each | TuTumblrPhoto from: each ]
+	media := tags collect: [ :each | TuTumblrImage from: each ]
 ]

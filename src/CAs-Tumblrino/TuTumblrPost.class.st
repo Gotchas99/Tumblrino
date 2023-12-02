@@ -10,12 +10,12 @@ Class {
 { #category : #'as yet unclassified' }
 TuTumblrPost >> photo_orig [
 	^ orig
-		ifNil: [ orig := TuTumblrPhoto from: ((json at: #photos) first at: #original_size) ]
+		ifNil: [ orig := TuTumblrImage from: ((json at: #photos) first at: #original_size) ]
 ]
 
 { #category : #'as yet unclassified' }
 TuTumblrPost >> photos [
-	^ ((json at: #photos) first at: #alt_sizes) collect: [ :p | TuTumblrPhoto from: p ]
+	^ ((json at: #photos) first at: #alt_sizes) collect: [ :p | TuTumblrImage from: p ]
 ]
 
 { #category : #'as yet unclassified' }
