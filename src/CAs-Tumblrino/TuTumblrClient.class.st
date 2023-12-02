@@ -206,7 +206,7 @@ TuTumblrClient >> likes [
 	       & (#limit -> 20).
 	[ 
 	json := self getUrl: url.
-	liked := json at: #liked_posts.self halt.
+	liked := json at: #liked_posts.
 	liked do: [ :like | 
 		likedPost := TuTumblrPostNpf from: like.
 		all add: likedPost ].
@@ -215,7 +215,6 @@ TuTumblrClient >> likes [
 			queryRemoveAll;
 			queryAddAll: (next at: #query_params) ] ] doWhileTrue: [ 
 		(json at: #_links) includesKey: #next ].
-
 	^ all
 ]
 
