@@ -117,8 +117,16 @@ TuTumblrClient >> apiKey [
 
 { #category : #actions }
 TuTumblrClient >> blogInfo [
+
+
+	^ self blogInfo: 'henk-heijmans'
+]
+
+{ #category : #actions }
+TuTumblrClient >> blogInfo: aBlogID [
+
 	| url json blog |
-	url := self api / 'blog' / 'googleme420.tumblr.com' / 'info'.
+	url := self api / 'blog' / aBlogID / 'info'.
 	json := self getUrl: url.
 	blog := json at: 'blog'.
 	blog := TuTumblrBlog from: (json at: #blog).

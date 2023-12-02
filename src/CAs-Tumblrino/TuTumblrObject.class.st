@@ -25,6 +25,12 @@ TuTumblrObject >> id:anId [
 	 id:=anId
 ]
 
+{ #category : #'as yet unclassified' }
+TuTumblrObject >> idTag [
+
+	^ #id
+]
+
 { #category : #initialization }
 TuTumblrObject >> initialize [
 
@@ -34,7 +40,7 @@ TuTumblrObject >> initialize [
 { #category : #initialization }
 TuTumblrObject >> parseJson [
 
-	id := json at: #id 
+	id:=json at: self idTag
 ]
 
 { #category : #initialization }

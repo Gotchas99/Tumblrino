@@ -5,6 +5,12 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+TuTumblrUser >> idTag [
+
+	^ #name
+]
+
+{ #category : #'as yet unclassified' }
 TuTumblrUser >> likes [
 	^json at: #likes
 ]
