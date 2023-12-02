@@ -19,7 +19,13 @@ TuTumblrContent class >> from: aJson [
 { #category : #initialization }
 TuTumblrContent >> initialize [
 
-	super initialize.type:=json at: #type
+	super initialize.
+	
+]
+
+{ #category : #initialization }
+TuTumblrContent >> parseJson [ 
+super parseJson .type:= json at:#type
 ]
 
 { #category : #initialization }

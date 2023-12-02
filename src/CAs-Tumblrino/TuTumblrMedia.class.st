@@ -2,6 +2,7 @@ Class {
 	#name : #TuTumblrMedia,
 	#superclass : #TuTumblrObject,
 	#instVars : [
+		'type',
 		'extent'
 	],
 	#category : #'CAs-Tumblrino-Core'
@@ -30,11 +31,16 @@ TuTumblrMedia >> idTag [ ^#url
 { #category : #parsing }
 TuTumblrMedia >> parseJson [
 
-	super parseJson.
-	extent := (json at:#width )@(json at:#height)
+	super parseJson..
+	type := (json at: #type).
+	extent := (json at: #width) @ (json at: #height)
 ]
 
 { #category : #parsing }
 TuTumblrMedia >> size [  
 ^ extent x * extent y
+]
+
+{ #category : #accessing }
+TuTumblrMedia >> url [ ^(json at: #url)
 ]
