@@ -40,7 +40,13 @@ TuTumblrObject >> initialize [
 { #category : #initialization }
 TuTumblrObject >> parseJson [
 
-	id:=json at: self idTag
+	self setId 
+]
+
+{ #category : #initialization }
+TuTumblrObject >> setId [
+
+	id := json at: self idTag
 ]
 
 { #category : #initialization }

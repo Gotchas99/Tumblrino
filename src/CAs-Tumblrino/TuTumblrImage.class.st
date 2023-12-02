@@ -10,29 +10,29 @@ Class {
 	#category : #'CAs-Tumblrino-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TuTumblrImage >> extent [
 	^ (json at: #width)@(json at:#height)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TuTumblrImage >> filename [
 	| tmp |
 	tmp := self url asUrl path.
 	^ tmp copyWithout: $/
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TuTumblrImage >> form [
 	^ form ifNil: [ self getForms ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TuTumblrImage >> forms [
 	^ forms ifNil: [ self getForms ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TuTumblrImage >> fullFilename [
 	| tmp root |
 	root := 'D:\Temp\tumblr\Tumblrino' asPath.
@@ -67,22 +67,39 @@ TuTumblrImage >> getStream [
 	^ gifStream
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
+TuTumblrImage >> initialize [ 
+super initialize .media:= OrderedCollection new.
+]
+
+{ #category : #testing }
 TuTumblrImage >> isGif [
 	^ self url endsWith: '.gif'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
+TuTumblrImage >> media [ ^media
+]
+
+{ #category : #parsing }
+TuTumblrImage >> parseJson [
+
+	super parseJson.
+	media := (json at: #media) collect: [ :each | TuTumblrMedia from: each]
+]
+
+{ #category : #initialization }
+TuTumblrImage >> setId [
+
+	id := (json at: #media) first at: #media_key
+]
+
+{ #category : #accessing }
 TuTumblrImage >> stream [
 	^ stream ifNil: [ self getStream ]
 ]
 
-{ #category : #'as yet unclassified' }
-TuTumblrImage >> type [
-	^ json at: #type
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TuTumblrImage >> url [
 	^ json at: #url
 ]

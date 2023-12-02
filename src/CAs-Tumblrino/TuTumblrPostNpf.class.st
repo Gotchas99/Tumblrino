@@ -2,20 +2,19 @@ Class {
 	#name : #TuTumblrPostNpf,
 	#superclass : #TuTumblrObject,
 	#instVars : [
-		'media',
 		'blogId',
 		'content'
 	],
 	#category : #'CAs-Tumblrino-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TuTumblrPostNpf >> blogId [
 
 	^ blogId ifEmpty: [ blogId:=json at: #blog at: #uuid].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TuTumblrPostNpf >> blogId:anId [
 
 	blogId:=anId 
@@ -29,8 +28,9 @@ TuTumblrPostNpf >> content [
 
 { #category : #initialization }
 TuTumblrPostNpf >> initialize [
-super initialize .
-	content := Dictionary new
+
+	super initialize.
+	content := OrderedCollection  new
 ]
 
 { #category : #accessing }
@@ -47,18 +47,23 @@ TuTumblrPostNpf >> load [
 		from: 'henk-heijmans'.self  parseJson 
 ]
 
-{ #category : #accessing }
-TuTumblrPostNpf >> media [
-^media
-]
-
 { #category : #initialization }
 TuTumblrPostNpf >> parseJson [
 
-	
 	super parseJson.
-	content := json at: #content
-	"tags := self content.
-	tags isDictionary ifTrue: [ tags := Array with: tags ].
-	media := tags collect: [ :each | TuTumblrImage from: each ]"
+	content := json at: #content.
+	self blogId: (json at: #tumblelog_uuid).
+	content := (json at: #content) collect: [ :each | 
+		           TuTumblrContent from: each ]
+]
+
+{ #category : #accessing }
+TuTumblrPostNpf >> summary [
+
+	^ json at: #summary
+]
+
+{ #category : #accessing }
+TuTumblrPostNpf >> tags [
+^json at:#tags
 ]

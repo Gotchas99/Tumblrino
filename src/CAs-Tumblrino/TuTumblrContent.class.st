@@ -16,6 +16,20 @@ TuTumblrContent class >> from: aJson [
 	^ (Smalltalk classNamed:className)  new setJson: aJson
 ]
 
+{ #category : #initialization }
+TuTumblrContent >> initialize [
+
+	super initialize.type:=json at: #type
+]
+
+{ #category : #initialization }
+TuTumblrContent >> setId [
+
+	id := UUIDGenerator next asString
+]
+
 { #category : #accessing }
-TuTumblrContent >> type [ ^ json at:#type
+TuTumblrContent >> type [
+
+	^ type
 ]
