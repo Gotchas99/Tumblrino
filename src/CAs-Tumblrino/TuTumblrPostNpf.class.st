@@ -51,7 +51,6 @@ TuTumblrPostNpf >> load [
 TuTumblrPostNpf >> parseJson [
 
 	super parseJson.
-	"content := json at: #content."
 	self blogId: (json at: #blog at: #uuid).
 	"self blogId: (json at: #tumblelog_uuid)."
 	content := (json at: #content) collect: [ :each | 

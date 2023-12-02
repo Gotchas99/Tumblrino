@@ -107,12 +107,18 @@ Token Secret XXXXXXXX"
 { #category : #accessing }
 TuTumblrClient >> api [
 
-	^ ZnUrl fromString: 'https://api.tumblr.com/v2'
+	^ ZnUrl fromString: 'https://api.tumblr.com'
 ]
 
 { #category : #accessing }
 TuTumblrClient >> apiKey [
 	^ self consumerKey
+]
+
+{ #category : #accessing }
+TuTumblrClient >> apiV2 [
+
+	^ self api/'v2'
 ]
 
 { #category : #actions }
@@ -126,7 +132,7 @@ TuTumblrClient >> blogInfo [
 TuTumblrClient >> blogInfo: aBlogID [
 
 	| url json blog |
-	url := self api / 'blog' / aBlogID / 'info'.
+	url := self apiV2/ 'blog' / aBlogID / 'info'.
 	json := self getUrl: url.
 	blog := json at: 'blog'.
 	blog := TuTumblrBlog from: (json at: #blog).
@@ -164,8 +170,7 @@ TuTumblrClient >> consumerSecret [
 TuTumblrClient >> getPost: postID from: blogID [
 
 	| url json |
-	url := self api / 'blog' / blogID / #posts / postID
-	       ? ('npf' -> true).
+	url := self apiV2 / 'blog' / blogID / #posts / postID ? ('npf' -> true).
 	json := self getUrl: url.
 	^ json
 ]
@@ -191,18 +196,26 @@ TuTumblrClient >> getUrl: aUrl [
 { #category : #actions }
 TuTumblrClient >> likes [
 
-	| likeNo url json liked all likedpost |
+	| likeNo url json liked all likedPost |
 	likeNo := self userInfo likes.
-	all := OrderedCollection new. 
-	0 to: likeNo by: 20 do: [ :i | "Transcript crShow: i printString , '*'."
+	all := OrderedCollection new.
+	"0 to: likeNo by: 20 do: [ :i | ""Transcript crShow: i printString , '*'.""
 		url := self api / 'user' / 'likes' ? ('npf' -> true)
-		       & (#limit -> 20) & (#offset -> i printString).
-		json := self getUrl: url.
-		liked := json at: #liked_posts.
-		"Transcript crShow: liked size printString."
-		liked do: [ :like | 
-			likedpost := TuTumblrPostNpf from: like.
-			all add: likedpost ] ].
+		       & (#limit -> 20) & (#offset -> i printString)."
+	url := self apiV2 / 'user' / 'likes' ? ('npf' -> true)
+	       & (#limit -> 20).
+	[ 
+	json := self getUrl: url.
+	liked := json at: #liked_posts.self halt.
+	liked do: [ :like | 
+		likedPost := TuTumblrPostNpf from: like.
+		all add: likedPost ].
+	(json at: #_links) at: #next ifPresent: [ :next | 
+		url
+			queryRemoveAll;
+			queryAddAll: (next at: #query_params) ] ] doWhileTrue: [ 
+		(json at: #_links) includesKey: #next ].
+
 	^ all
 ]
 
@@ -229,8 +242,9 @@ TuTumblrClient >> service [
 
 { #category : #actions }
 TuTumblrClient >> unlike: aPost [
+
 	| url |
-	url := self api / 'user/unlike'.
+	url := self apiV2 / 'user/unlike'.
 	url := url ? ('id' -> aPost id) & ('reblog_key' -> aPost reblog_key).
 	self postUrl: url.
 	^ self
@@ -240,7 +254,7 @@ TuTumblrClient >> unlike: aPost [
 TuTumblrClient >> userInfo [
 
 	| url json user |
-	url :=  self api / 'user/info'.
+	url := self apiV2 / 'user/info'.
 	json := self getUrl: url.
 	user := TuTumblrUser from: (json at: #user).
 	^ user

@@ -91,7 +91,7 @@ TuTumblrImage >> parseJson [
 { #category : #initialization }
 TuTumblrImage >> setId [
 
-	id := (json at: #media) first at: #media_key
+	id := (json at: #media) first at: #url
 ]
 
 { #category : #accessing }

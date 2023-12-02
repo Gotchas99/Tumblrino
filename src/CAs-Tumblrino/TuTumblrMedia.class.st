@@ -8,7 +8,7 @@ Class {
 	#category : #'CAs-Tumblrino-Core'
 }
 
-{ #category : #parsing }
+{ #category : #comparing }
 TuTumblrMedia >> <= other [
 ^self size <= other size
 ]
@@ -36,7 +36,7 @@ TuTumblrMedia >> parseJson [
 	extent := (json at: #width) @ (json at: #height)
 ]
 
-{ #category : #parsing }
+{ #category : #accessing }
 TuTumblrMedia >> size [  
 ^ extent x * extent y
 ]
