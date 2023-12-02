@@ -3,7 +3,6 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'oauth1Service',
-		'consdata',
 		'consData'
 	],
 	#classVars : [
@@ -50,11 +49,11 @@ TuTumblrClient class >> keys [
 
 { #category : #accessing }
 TuTumblrClient class >> readKeys [
-
+<script>
 	| fname str |
 	fname := 'D:\Temp\tumblr\Tumblr_API.txt'.
 	str := fname asFileReference contents.
-	^ str 
+	^ str
 ]
 
 { #category : #accessing }
@@ -91,7 +90,7 @@ Newly registered consumers are rate limited to 1,000 requests per hour, and 5,00
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #OAuth1 }
 TuTumblrClient >> accToken [
 	"self halt."
 
@@ -102,17 +101,18 @@ TuTumblrClient >> accToken [
 Token Secret XXXXXXXX"
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TuTumblrClient >> api [
-	^ ZnUrl fromString: 'http://api.tumblr.com/v2'
+
+	^ ZnUrl fromString: 'https://api.tumblr.com/v2'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TuTumblrClient >> apiKey [
 	^ self consumerKey
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 TuTumblrClient >> blogInfo [
 	| url json blog |
 	url := self api / 'blog' / 'googleme420.tumblr.com' / 'info'.
@@ -122,7 +122,7 @@ TuTumblrClient >> blogInfo [
 	^ blog
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #OAuth1 }
 TuTumblrClient >> consumerData [
 	^ consData
 		ifNil: [ consData := ZnOAuth1ConsumerData new
@@ -133,24 +133,24 @@ TuTumblrClient >> consumerData [
 				consumerSecret: self secretKey ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TuTumblrClient >> consumerKey [
 	^ 'XXXXXXXX'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TuTumblrClient >> consumerSecret [
 	^ self secretKey
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #OAuth1 }
 TuTumblrClient >> getTokenFromCallbackUrl: aUrl [
 	| ver |
 	ver := aUrl asUrl query at: 'oauth_verifier'.
 	^ ver
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 TuTumblrClient >> getUrl: aUrl [
 	| response json |
 	response := (self service httpGet: aUrl using: self accToken)
@@ -161,28 +161,25 @@ TuTumblrClient >> getUrl: aUrl [
 	^ json at: #response
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 TuTumblrClient >> likes [
+
 	| likeNo url json liked all likedpost |
 	likeNo := self userInfo likes.
 	all := OrderedCollection new.
-	0 to: likeNo by: 20 do: [ :i | 
-		"Transcript crShow: i printString , '*'."
-		url := ZnUrl
-			fromString:
-				'http://api.tumblr.com/v2/user/likes?npf=true&limit=20&offset='
-					, i printString.
+	0 to: likeNo by: 20 do: [ :i | "Transcript crShow: i printString , '*'."
+		url := self api /'user/likes?npf=true&limit=20&offset='
+			       , i printString.
 		json := self getUrl: url.
 		liked := json at: #liked_posts.
 		"Transcript crShow: liked size printString."
-		liked
-			do: [ :like | 
-				likedpost := TuTumblrPostNpf from: like.
-				all add: likedpost ] ].
-	^ all
+		liked do: [ :like | 
+			likedpost := TuTumblrPostNpf from: like.
+			all add: likedpost ] ].
+	^ all 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 TuTumblrClient >> postUrl: aUrl [
 	| response json |
 	response := (self service
@@ -195,12 +192,12 @@ TuTumblrClient >> postUrl: aUrl [
 	^ json at: #response
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TuTumblrClient >> secretKey [
 	^ 'XXXXXXX'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #OAuth1 }
 TuTumblrClient >> service [
 	^ oauth1Service
 		ifNil: [ oauth1Service := ZnOAuth1Service new
@@ -208,7 +205,7 @@ TuTumblrClient >> service [
 				yourself ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 TuTumblrClient >> unlike: aPost [
 	| url |
 	url := self api / 'user/unlike'.
@@ -217,10 +214,11 @@ TuTumblrClient >> unlike: aPost [
 	^ self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 TuTumblrClient >> userInfo [
+
 	| url json user |
-	url := ZnUrl fromString: 'http://api.tumblr.com/v2/user/info'.
+	url :=  self api / 'user/info'.
 	json := self getUrl: url.
 	user := TuTumblrUser from: (json at: #user).
 	^ user
