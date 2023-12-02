@@ -18,11 +18,13 @@ TuTumblrClient class >> default [
 
 { #category : #accessing }
 TuTumblrClient class >> keyString [
+
 	"gå till 
 	https://api.tumblr.com/console/
 	och tryck på 'Show keys', och klistra in de fyra raderna här.
 	whitespace tas bort"
 
+	self deprecated: 'no data stored here. not used'.
 	^ '
 	Consumer Key XXXXXX
 Consumer Secret XXXXXX
@@ -49,7 +51,8 @@ TuTumblrClient class >> keys [
 
 { #category : #accessing }
 TuTumblrClient class >> readKeys [
-<script>
+
+
 	| fname str |
 	fname := 'D:\Temp\tumblr\Tumblr_API.txt'.
 	str := fname asFileReference contents.
@@ -124,23 +127,29 @@ TuTumblrClient >> blogInfo [
 
 { #category : #OAuth1 }
 TuTumblrClient >> consumerData [
-	^ consData
-		ifNil: [ consData := ZnOAuth1ConsumerData new
-				getRequestTokenUrl: 'https://www.tumblr.com/oauth/request_token';
-				authorizeTokenUrl: 'https://www.tumblr.com/oauth/authorize';
-				getAccessTokenUrl: 'https://www.tumblr.com/oauth/access_token';
-				consumer: self consumerKey;
-				consumerSecret: self secretKey ]
+
+	^ consData ifNil: [ 
+		  consData := ZnOAuth1ConsumerData new
+			              getRequestTokenUrl:
+				              'https://www.tumblr.com/oauth/request_token';
+			              authorizeTokenUrl:
+				              'https://www.tumblr.com/oauth/authorize';
+			              getAccessTokenUrl:
+				              'https://www.tumblr.com/oauth/access_token';
+			              consumer: self consumerKey;
+			              consumerSecret: self consumerSecret  ]
 ]
 
 { #category : #accessing }
 TuTumblrClient >> consumerKey [
-	^ 'XXXXXXXX'
+
+	^ self class keys at: 'Consumer Key'
 ]
 
 { #category : #accessing }
 TuTumblrClient >> consumerSecret [
-	^ self secretKey
+
+	^ self class keys at: 'Consumer Secret'
 ]
 
 { #category : #OAuth1 }
@@ -190,11 +199,6 @@ TuTumblrClient >> postUrl: aUrl [
 	((json at: #meta) at: #status) ~= 200
 		ifTrue: [ Error signal: 'Failed' ].
 	^ json at: #response
-]
-
-{ #category : #accessing }
-TuTumblrClient >> secretKey [
-	^ 'XXXXXXX'
 ]
 
 { #category : #OAuth1 }
