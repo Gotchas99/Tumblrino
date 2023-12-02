@@ -15,11 +15,26 @@ TuTumblrObject class >> from: aJson [
 
 { #category : #'as yet unclassified' }
 TuTumblrObject >> id [
-	^ json at: #id
+
+	^ id 
+]
+
+{ #category : #'as yet unclassified' }
+TuTumblrObject >> id:anId [
+
+	 id:=anId
+]
+
+{ #category : #initialization }
+TuTumblrObject >> initialize [
+
+	json := Dictionary new 
 ]
 
 { #category : #initialization }
 TuTumblrObject >> parseJson [
+
+	id := json at: #id 
 ]
 
 { #category : #initialization }
