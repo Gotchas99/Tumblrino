@@ -170,7 +170,7 @@ TuTumblrClient >> consumerSecret [
 TuTumblrClient >> getPost: postID from: blogID [
 
 	| url json |
-	url := self apiV2 / 'blog' / blogID / #posts / postID ? ('npf' -> true).
+	url := self apiV2 / 'blog' / blogID / #posts / postID asString ? ('npf' -> true).
 	json := self getUrl: url.
 	^ json
 ]

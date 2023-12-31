@@ -2,12 +2,17 @@ Class {
 	#name : #ZipExtraction,
 	#superclass : #Object,
 	#instVars : [
-		'basePath',
 		'mediaFolder',
-		'xmlFolder'
+		'xmlFolder',
+		'exportPath'
 	],
 	#category : #'CAs-Tumblrino-Zip'
 }
+
+{ #category : #initialization }
+ZipExtraction >> basePath [
+^TuLibrary default basePath
+]
 
 { #category : #'as yet unclassified' }
 ZipExtraction >> getPostsFrom: aZipArchiveName [
@@ -27,10 +32,11 @@ ZipExtraction >> getPostsFrom: aZipArchiveName [
 { #category : #initialization }
 ZipExtraction >> initialize [
 
-	basePath := 'D:\Temp\TumblrLibrary\_Export'.
-	mediaFolder := (basePath asFileReference / 'media')
+	exportPath := TuLibrary default basePath /'_Export'.
+	mediaFolder := (exportPath asFileReference / 'media')
 		               ensureCreateDirectory.
-	xmlFolder := (basePath asFileReference / 'xml') ensureCreateDirectory
+	xmlFolder := (exportPath asFileReference / 'xml')
+		             ensureCreateDirectory
 ]
 
 { #category : #initialization }
@@ -43,7 +49,7 @@ ZipExtraction >> misc [
 
 	| zips zip postMember postZip posts postXml |
 	self flag:'old stuff. pick and reuse3.'.
-	zips := basePath asFileReference filesMatching: '*.zip'.
+	zips := exportPath asFileReference filesMatching: '*.zip'.
 	zip := ZipArchive new readFrom: zips first.
 	[ 
 	zip memberNames
@@ -69,7 +75,7 @@ ZipExtraction >> misc [
 ZipExtraction >> processAllFiles [
 
 	| zips |
-	zips := basePath asFileReference filesMatching: '*.zip'.
+	zips := (exportPath asFileReference / '/zips') filesMatching: '*.zip'.
 	zips do: [ :z | 
 		self log: [ 'Export file: ' , z basename ].
 		self saveMediaFrom: z ]

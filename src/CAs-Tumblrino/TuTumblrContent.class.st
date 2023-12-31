@@ -2,7 +2,8 @@ Class {
 	#name : #TuTumblrContent,
 	#superclass : #TuTumblrObject,
 	#instVars : [
-		'type'
+		'type',
+		'owner'
 	],
 	#category : #'CAs-Tumblrino-Core'
 }
@@ -23,12 +24,23 @@ TuTumblrContent >> initialize [
 	
 ]
 
+{ #category : #accessing }
+TuTumblrContent >> owner:aPost [
+owner:=aPost
+]
+
 { #category : #initialization }
 TuTumblrContent >> parseJson [ 
 super parseJson .type:= json at:#type
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
+TuTumblrContent >> saveToFile [
+
+
+]
+
+{ #category : #accessing }
 TuTumblrContent >> setId [
 
 	id := UUIDGenerator next asString

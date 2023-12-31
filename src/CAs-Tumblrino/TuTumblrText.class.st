@@ -5,6 +5,13 @@ Class {
 }
 
 { #category : #accessing }
+TuTumblrText >> saveToFile [
+	super saveToFile.
+
+	
+]
+
+{ #category : #accessing }
 TuTumblrText >> text [
 
 	^ json at: #text

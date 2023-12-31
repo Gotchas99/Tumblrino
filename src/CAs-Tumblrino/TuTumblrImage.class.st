@@ -88,10 +88,26 @@ TuTumblrImage >> parseJson [
 	media := (json at: #media) collect: [ :each | TuTumblrMedia from: each]
 ]
 
+{ #category : #accessing }
+TuTumblrImage >> path [ ^(owner path / id)
+]
+
+{ #category : #accessing }
+TuTumblrImage >> saveToFile [
+
+	super saveToFile.
+	self path asFileReference  ensureCreateDirectory.
+	media do: [ :m | 
+		m owner: self.
+		m saveToFile ]
+]
+
 { #category : #initialization }
 TuTumblrImage >> setId [
 
-	id := (json at: #media) first at: #url
+| url |
+url := (json at: #media) first at: #url.
+	id:= url asUrl firstPathSegment .
 ]
 
 { #category : #accessing }

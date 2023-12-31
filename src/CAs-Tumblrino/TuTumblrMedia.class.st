@@ -3,6 +3,7 @@ Class {
 	#superclass : #TuTumblrObject,
 	#instVars : [
 		'type',
+		'owner',
 		'extent'
 	],
 	#category : #'CAs-Tumblrino-Core'
@@ -28,12 +29,27 @@ TuTumblrMedia >> hasOriginalDimensions [
 TuTumblrMedia >> idTag [ ^#url
 ]
 
+{ #category : #accessing }
+TuTumblrMedia >> owner:aContent [
+owner:=aContent 
+]
+
 { #category : #parsing }
 TuTumblrMedia >> parseJson [
 
 	super parseJson..
 	type := (json at: #type).
 	extent := (json at: #width) @ (json at: #height)
+]
+
+{ #category : #accessing }
+TuTumblrMedia >> saveToFile [
+
+	| url fref |
+	url := self url asUrl.
+	fref := (owner path / url lastPathSegment) asFileReference.
+	fref exists ifTrue: [ ^ self ].
+	url saveContentsToFile: fref
 ]
 
 { #category : #accessing }

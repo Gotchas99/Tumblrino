@@ -19,3 +19,10 @@ TuTumblrVideo >> parseJson [
 	super parseJson.
 	media := TuTumblrMedia from:(json at: #media) 
 ]
+
+{ #category : #accessing }
+TuTumblrVideo >> saveToFile [
+	super saveToFile.
+
+	self halt
+]

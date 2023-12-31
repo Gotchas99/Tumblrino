@@ -3,7 +3,9 @@ Class {
 	#superclass : #TuTumblrObject,
 	#instVars : [
 		'blogId',
-		'content'
+		'content',
+		'trail',
+		'path'
 	],
 	#category : #'CAs-Tumblrino-Core'
 }
@@ -26,6 +28,14 @@ TuTumblrPostNpf >> content [
 	^ content
 ]
 
+{ #category : #accessing }
+TuTumblrPostNpf >> id: anId [
+
+	super id: anId.
+	path := TuLibrary default basePath asPath / '_posts' / anId.
+
+]
+
 { #category : #initialization }
 TuTumblrPostNpf >> initialize [
 
@@ -33,18 +43,23 @@ TuTumblrPostNpf >> initialize [
 	content := OrderedCollection  new
 ]
 
-{ #category : #accessing }
+{ #category : #testing }
 TuTumblrPostNpf >> isLoaded [
- 
-	^ self content isEmpty not
+
+	^ self content isNotEmpty
 ]
 
 { #category : #initialization }
 TuTumblrPostNpf >> load [
 
-	json:=TuTumblrClient default
-		getPost: '735400205192675328'
-		from: 'henk-heijmans'.self  parseJson 
+	"json := TuTumblrClient default
+		        getPost: '735400205192675328'
+		        from: 'henk-heijmans'"
+
+	json := TuTumblrClient default
+		        getPost: id
+		        from: blogId .
+	self parseJson
 ]
 
 { #category : #initialization }
@@ -54,7 +69,26 @@ TuTumblrPostNpf >> parseJson [
 	self blogId: (json at: #blog at: #uuid).
 	"self blogId: (json at: #tumblelog_uuid)."
 	content := (json at: #content) collect: [ :each | 
-		           TuTumblrContent from: each ]
+		           TuTumblrContent from: each ].
+	json at: #trail ifPresent: [ :tr | 
+		trail := (tr collect: [ :each | 
+			          (each at: #content) collect: [ :m | 
+				          TuTumblrContent from: m ] ]) flattened.
+		content := content, trail ]
+]
+
+{ #category : #accessing }
+TuTumblrPostNpf >> path [ ^path
+]
+
+{ #category : #'as yet unclassified' }
+TuTumblrPostNpf >> saveToFile [
+
+	| dir |
+	self isLoaded ifFalse: [ Error signal: 'not loaded' ].
+	dir := path asFileReference.
+	dir ensureCreateDirectory.
+	content do: [ :cont | cont owner: self.cont saveToFile ]
 ]
 
 { #category : #accessing }
