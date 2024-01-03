@@ -102,10 +102,12 @@ ZipExtraction >> saveMediaFrom: aZipArchive [
 ]
 
 { #category : #initialization }
-ZipExtraction >> saveXml: anXmlString forZip:aFileRef [
+ZipExtraction >> saveXml: anXmlString forZip: aFileRef [
 
 	"doc := XMLDOMParser parse: postsXml.
 	p1 := doc firstElement elementsNamed: 'post'."
 
-	self halt
+	| basename |
+	basename := aFileRef basenameWithoutExtension.
+	xmlFolder / basename , #xml writeStreamDo: [ :s | s << anXmlString ]
 ]
