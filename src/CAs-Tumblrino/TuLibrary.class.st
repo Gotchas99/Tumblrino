@@ -18,5 +18,5 @@ TuLibrary class >> default [
 { #category : #accessing }
 TuLibrary >> basePath [
 
-	^ 'D:\Temp\TumblrLibrary\'
+	^ 'D:\Temp\TumblrLibrary\' asFileReference
 ]

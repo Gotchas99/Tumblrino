@@ -9,34 +9,28 @@ Class {
 	#category : #'CAs-Tumblrino-Zip'
 }
 
-{ #category : #initialization }
-ZipExtraction >> basePath [
-^TuLibrary default basePath
-]
-
 { #category : #'as yet unclassified' }
 ZipExtraction >> getPostsFrom: aZipArchiveName [
-	| zip postMember postZip posts postsXml p1 doc |
+
+	| zip postMember postZip posts postsXml html |
 	zip := ZipArchive new readFrom: aZipArchiveName.
 	postMember := zip memberNamed: 'posts.zip'.
 	postZip := ByteArray
-		new: postMember uncompressedSize
-		streamContents: [ :stream | postMember extractTo: stream ].
+		           new: postMember uncompressedSize
+		           streamContents: [ :stream | postMember extractTo: stream ].
 	posts := ZipArchive new readFrom: postZip readStream.
 	postsXml := (posts memberNamed: 'posts.xml') contents asString.
-	"doc := XMLDOMParser parse: postsXml."
-	"p1 := doc firstElement elementsNamed: 'post'."
-	^ p1
+	self saveXml: postsXml forZip:aZipArchiveName.
+	html := posts membersMatching: '*.html'.
+	html do: [ :h | self saveHtml: h ]
 ]
 
 { #category : #initialization }
 ZipExtraction >> initialize [
 
-	exportPath := TuLibrary default basePath /'_Export'.
-	mediaFolder := (exportPath asFileReference / 'media')
-		               ensureCreateDirectory.
-	xmlFolder := (exportPath asFileReference / 'xml')
-		             ensureCreateDirectory
+	exportPath := TuLibrary default basePath  / '_Export'.
+	mediaFolder := (exportPath / 'media') ensureCreateDirectory.
+	xmlFolder := (exportPath / 'xml') ensureCreateDirectory
 ]
 
 { #category : #initialization }
@@ -75,10 +69,17 @@ ZipExtraction >> misc [
 ZipExtraction >> processAllFiles [
 
 	| zips |
-	zips := (exportPath asFileReference / '/zips') filesMatching: '*.zip'.
+	zips := exportPath asFileReference / 'zips' filesMatching: '*.zip'.
 	zips do: [ :z | 
 		self log: [ 'Export file: ' , z basename ].
-		self saveMediaFrom: z ]
+		self getPostsFrom: z.
+		self saveMediaFrom: z ] 
+]
+
+{ #category : #initialization }
+ZipExtraction >> saveHtml: aHtmlString [
+
+	aHtmlString extractInDirectory: exportPath overwrite: true
 ]
 
 { #category : #initialization }
@@ -98,4 +99,13 @@ ZipExtraction >> saveMediaFrom: aZipArchive [
 						extractToFileNamed: fn asFileReference basename
 						inDirectory: mediaFolder
 						overwrite: false ] ] ]
+]
+
+{ #category : #initialization }
+ZipExtraction >> saveXml: anXmlString forZip:aFileRef [
+
+	"doc := XMLDOMParser parse: postsXml.
+	p1 := doc firstElement elementsNamed: 'post'."
+
+	self halt
 ]

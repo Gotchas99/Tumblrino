@@ -32,8 +32,7 @@ TuTumblrPostNpf >> content [
 TuTumblrPostNpf >> id: anId [
 
 	super id: anId.
-	path := TuLibrary default basePath asPath / '_posts' / anId.
-
+	path := TuLibrary default basePath  / '_posts' / anId
 ]
 
 { #category : #initialization }
@@ -86,9 +85,11 @@ TuTumblrPostNpf >> saveToFile [
 
 	| dir |
 	self isLoaded ifFalse: [ Error signal: 'not loaded' ].
-	dir := path asFileReference.
+	dir := path .
 	dir ensureCreateDirectory.
-	content do: [ :cont | cont owner: self.cont saveToFile ]
+	content do: [ :cont | 
+		cont owner: self.
+		cont saveToFile ]
 ]
 
 { #category : #accessing }
