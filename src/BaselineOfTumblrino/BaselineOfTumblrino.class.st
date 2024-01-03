@@ -23,30 +23,32 @@ BaselineOfTumblrino >> baseline: spec [
 
 { #category : #actions }
 BaselineOfTumblrino >> defineDependencies: spec [
+
 	^ spec
-		baseline: 'XMLParser'
-			with: [ spec repository: 'github://pharo-contributions/XML-XMLParser/src' ];
-		baseline: 'NeoJSON'
-			with: [ spec repository: 'github://svenvc/NeoJSON/repository' ];
-		baseline: 'SSO-OAuth1'
-			with: [ spec
-				loads: #('SSO-OAuth1');
-				repository: 'github://svenvc/zinc/repository' ];
-		baseline: 'BabyMock2'
-			with: [ spec repository: 'github://Gotchas99/BabyMock2/src' ];
-		baseline: 'Seaside'
-			with: [ spec
-				loads: #('Core');
-				repository: 'github://SeasideSt/Seaside/repository' ];
-		"baseline: 'STON-Core'
-					with: [ spec repository: 'github://svenvc/ston/repository' ] "
-			"baseline: 'NeoJSON'
+		  baseline: 'XMLParser'
+		  with: [ 
+			  spec repository: 'github://pharo-contributions/XML-XMLParser/src' ];
+   baseline: 'Soup' 
+   with: [ spec repository: 'github://pharo-contributions/Soup/' ];
+		  baseline: 'NeoJSON'
+		  with: [ spec repository: 'github://svenvc/NeoJSON/repository' ];
+		  baseline: 'SSO-OAuth1' with: [ 
+			  spec
+				  loads: #( 'SSO-OAuth1' );
+				  repository: 'github://svenvc/zinc/repository' ];
+		  baseline: 'BabyMock2'
+		  with: [ spec repository: 'github://Gotchas99/BabyMock2/src' ];
+		  baseline: 'Seaside' with: [ 
+		  spec
+			  loads: #( 'Core' );
+			  repository: 'github://SeasideSt/Seaside/repository' ];
+		  "baseline: 'STON-Core'
+					with: [ spec repository: 'github://svenvc/ston/repository' ] ""baseline: 'NeoJSON'
 			with: [ spec
 				loads: 'core';
-				repository: 'github://svenvc/NeoJSON:v17' ];"
-			"baseline: 'NeoConsole'
+				repository: 'github://svenvc/NeoJSON:v17' ];""baseline: 'NeoConsole'
 			with: [ spec repository: 'github://svenvc/NeoConsole:master' ];"
-			yourself
+			  yourself
 ]
 
 { #category : #actions }
