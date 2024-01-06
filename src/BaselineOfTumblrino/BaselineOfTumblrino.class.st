@@ -69,77 +69,43 @@ BaselineOfTumblrino >> definePackages: spec [
 
 { #category : #actions }
 BaselineOfTumblrino >> loadDeps [
-	"TODO: fix for TvProgram"
+
 
 	"utility method. not part of baseline itself"
 
-	self flag: #todo.
 	Metacello new
 		repository: 'github://svenvc/zinc/repository';
 		baseline: 'ZincHTTPComponents';
 		load: 'SSO-OAuth1'.
+
 	Metacello new
 		repository: 'github://pharo-contributions/XML-XMLParser/src';
-		baseline: 'XMLParser'.
-	"--------------------------"
-	Metacello new
-		githubUser: 'PolyMathOrg'
-			project: 'PolyMath'
-			commitish: 'master'
-			path: 'src';
-		baseline: 'PolyMath';
-		load: 'Math-DHB-Numerical'.
-	Metacello new
-		repository: 'github://pharo-nosql/mongotalk/src';
-		baseline: 'MongoTalk';
+		baseline: 'XMLParser';
 		load.
+
 	Metacello new
-		repository: 'github://svenvc/zinc/repository';
-		baseline: 'ZincHTTPComponents';
-		load: 'SSO-OAuth1'.
-	Metacello new
-		githubUser: 'svenvc'
-			project: 'NeoCSV'
-			commitish: 'master'
-			path: 'repository';
-		baseline: 'NeoCSV';
-		load.
-	Metacello new
-		githubUser: 'svenvc'
-			project: 'NeoConsole'
-			commitish: 'master'
-			path: 'src';
-		baseline: 'NeoConsole';
-		load.
-	Metacello new
-		githubUser: 'zeroflag'
-			project: 'Teapot'
-			commitish: 'master'
-			path: 'src';
-		baseline: 'Teapot';
-		load: 'Teapot-Core'.
-	Metacello new
-		smalltalkhubUser: 'PharoExtras' project: 'XMLParser';
-		configuration: 'XMLParser';
-		version: #stable;
-		load: 'Core'.
-	Metacello new
-		smalltalkhubUser: 'Gotchas' project: 'ServiceBase';
-		configuration: 'ServiceBase';
-		version: #development
+		baseline: 'Soup';
+		repository: 'github://pharo-contributions/Soup';
+		load
 ]
 
 { #category : #actions }
 BaselineOfTumblrino >> loadSelf [
-	"TODO: fix for TvProgram"
 
-	"example. change to my values"
+Metacello new
+  repository: 'github://svenvc/zinc/repository';
+  baseline: 'ZincHTTPComponents';
+  load:'SSO-OAuth1'.
 
-	self flag: #todo.
-	Metacello new
-		baseline: 'PDM';
-		repository: 'github://RMODINRIA-Blockchain/SmaCC-Solidity';
-		load
+Metacello new
+  repository: 'github://pharo-contributions/XML-XMLParser/src';
+  baseline: 'XMLParser';
+  load.
+
+Metacello new
+	baseline: 'Soup';
+	repository: 'github://pharo-contributions/Soup';
+	load.
 ]
 
 { #category : #actions }
