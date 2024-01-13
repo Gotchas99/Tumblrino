@@ -31,8 +31,7 @@ TuTumblrVideo >> parseJson [
 TuTumblrVideo >> saveToFile [
 
 	super saveToFile.
-	self halt.
-		{
+	{
 		poster.
 		filmstrip.
 		media } do: [ :each | each ifNotNil: [ each owner: owner ] ].
