@@ -6,19 +6,19 @@ Class {
 
 { #category : #actions }
 BaselineOfTumblrino >> baseline: spec [
+
 	<baseline>
-	spec
-		for: #common
-		do: [ spec preLoadDoIt: #preload:package:.
-			spec postLoadDoIt: #postload:package:.
-			self
-				defineDependencies: spec;
-				definePackages: spec.
-			spec
-				group: 'default' with: #('core');
-				group: 'core' with: #('CAs-Pirate' 'CAs-Pirate-Gui');
-				group: 'web' with: #('CAs-Pirate-Web');
-				group: 'tests' with: #(#'CAs-PirateTest') ]
+	spec for: #common do: [ 
+		spec preLoadDoIt: #preload:package:.
+		spec postLoadDoIt: #postload:package:.
+		self
+			defineDependencies: spec;
+			definePackages: spec.
+		spec
+			group: 'default' with: #( 'core' );
+			group: 'core' with: #( 'CAs-Tumblrino' );
+			group: 'web' with: #( 'CAs-Tumblrino-Web' );
+			group: 'tests' with: #( #'CAs-Tumblrino-Test' ) ]
 ]
 
 { #category : #actions }
@@ -28,8 +28,8 @@ BaselineOfTumblrino >> defineDependencies: spec [
 		  baseline: 'XMLParser'
 		  with: [ 
 			  spec repository: 'github://pharo-contributions/XML-XMLParser/src' ];
-   baseline: 'Soup' 
-   with: [ spec repository: 'github://pharo-contributions/Soup/' ];
+		  baseline: 'Soup'
+		  with: [ spec repository: 'github://pharo-contributions/Soup/' ];
 		  baseline: 'NeoJSON'
 		  with: [ spec repository: 'github://svenvc/NeoJSON/repository' ];
 		  baseline: 'SSO-OAuth1' with: [ 
@@ -43,10 +43,11 @@ BaselineOfTumblrino >> defineDependencies: spec [
 			  loads: #( 'Core' );
 			  repository: 'github://SeasideSt/Seaside/repository' ];
 		  "baseline: 'STON-Core'
-					with: [ spec repository: 'github://svenvc/ston/repository' ] ""baseline: 'NeoJSON'
+					with: [ spec repository: 'github://svenvc/ston/repository' ] ;
+			baseline: 'NeoJSON'
 			with: [ spec
 				loads: 'core';
-				repository: 'github://svenvc/NeoJSON:v17' ];""baseline: 'NeoConsole'
+				repository: 'github://svenvc/NeoJSON:v17' ]; baseline: 'NeoConsole'
 			with: [ spec repository: 'github://svenvc/NeoConsole:master' ];"
 			  yourself
 ]
