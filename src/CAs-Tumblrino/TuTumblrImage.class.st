@@ -85,7 +85,9 @@ TuTumblrImage >> media [ ^media
 TuTumblrImage >> parseJson [
 
 	super parseJson.
-	media := (json at: #media) collect: [ :each | TuTumblrMedia from: each]
+	media := (json at: #media) collect: [ :each |
+		         TuTumblrMedia from: each ].
+	media do:[:m|m owner: self].
 ]
 
 { #category : #accessing }
@@ -96,9 +98,9 @@ TuTumblrImage >> path [ ^(owner path / id)
 TuTumblrImage >> saveToFile [
 
 	super saveToFile.
-	self path asFileReference  ensureCreateDirectory.
-	media do: [ :m | 
-		m owner: self.
+	self path asFileReference ensureCreateDirectory.
+	media do: [ :m |
+		
 		m saveToFile ]
 ]
 

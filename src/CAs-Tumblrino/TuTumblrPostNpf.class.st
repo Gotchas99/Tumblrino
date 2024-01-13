@@ -48,7 +48,7 @@ TuTumblrPostNpf >> isLoaded [
 	^ self content isNotEmpty
 ]
 
-{ #category : #initialization }
+{ #category : #action }
 TuTumblrPostNpf >> load [
 
 	"json := TuTumblrClient default
@@ -61,26 +61,26 @@ TuTumblrPostNpf >> load [
 	self parseJson
 ]
 
-{ #category : #initialization }
+{ #category : #action }
 TuTumblrPostNpf >> parseJson [
 
 	super parseJson.
 	self blogId: (json at: #blog at: #uuid).
 	"self blogId: (json at: #tumblelog_uuid)."
-	content := (json at: #content) collect: [ :each | 
+	content := (json at: #content) collect: [ :each |
 		           TuTumblrContent from: each ].
-	json at: #trail ifPresent: [ :tr | 
-		trail := (tr collect: [ :each | 
-			          (each at: #content) collect: [ :m | 
+	json at: #trail ifPresent: [ :tr |
+		trail := (tr collect: [ :each |
+			          (each at: #content) collect: [ :m |
 				          TuTumblrContent from: m ] ]) flattened.
-		content := content, trail ]
+		content := content , trail ] 
 ]
 
 { #category : #accessing }
 TuTumblrPostNpf >> path [ ^path
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 TuTumblrPostNpf >> saveToFile [
 
 	| dir |
@@ -90,6 +90,13 @@ TuTumblrPostNpf >> saveToFile [
 	content do: [ :cont | 
 		cont owner: self.
 		cont saveToFile ]
+]
+
+{ #category : #accessing }
+TuTumblrPostNpf >> setId [
+
+	super setId.
+	path := TuLibrary default basePath / '_posts' / id asString
 ]
 
 { #category : #accessing }
