@@ -38,16 +38,18 @@ BaselineOfTumblrino >> defineDependencies: spec [
 				  repository: 'github://svenvc/zinc/repository' ];
 		  baseline: 'BabyMock2'
 		  with: [ spec repository: 'github://Gotchas99/BabyMock2/src' ];
-		
-	
-  baseline: 'Teapot' with:[
-spec  repository: 'github://zeroflag/Teapot/source'];
-
-		
+		  baseline: 'Teapot'
+		  with: [ spec repository: 'github://zeroflag/Teapot/source' ];
 		  baseline: 'Seaside' with: [
 		  spec
 			  loads: #( 'Core' );
 			  repository: 'github://SeasideSt/Seaside/repository' ];
+		
+  baseline: 'SQLite3'
+with:[spec  repository: 'github://pharo-rdbms/Pharo-SQLite3/src'];
+
+
+
 		  "baseline: 'STON-Core'
 					with: [ spec repository: 'github://svenvc/ston/repository' ] ;
 			baseline: 'NeoJSON'
@@ -65,7 +67,7 @@ BaselineOfTumblrino >> definePackages: spec [
 	^ spec
 		  package: 'CAs-Tumblrino'
 		  with: [
-			  spec requires: #( 'XMLParser' 'NeoJSON' 'ZincHTTPComponents' ) ];
+			  spec requires: #( 'XMLParser' 'NeoJSON' 'ZincHTTPComponents'  'SQLite3') ];
 		  package: #'CAs-Tumblrino-Gui'
 		  with: [ spec requires: #( 'CAs-Tumblrino' ) ];
 		  package: #'CAs-Tumblrino-Test'
@@ -94,10 +96,15 @@ BaselineOfTumblrino >> loadDeps [
 		repository: 'github://pharo-contributions/Soup';
 		load.
 
-Metacello new
-  baseline: 'Teapot';
-  repository: 'github://zeroflag/Teapot/source';
-  load.		
+	Metacello new
+		baseline: 'Teapot';
+		repository: 'github://zeroflag/Teapot/source';
+		load.
+		
+	Metacello new
+  repository: 'github://pharo-rdbms/Pharo-SQLite3/src';
+  baseline: 'SQLite3';
+  load
 ]
 
 { #category : #actions }
