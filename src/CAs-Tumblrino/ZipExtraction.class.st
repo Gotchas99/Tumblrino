@@ -66,6 +66,22 @@ ZipExtraction >> misc [
 ]
 
 { #category : #initialization }
+ZipExtraction >> parsePost: pel [
+
+	| dict tags |
+	dict := Dictionary new.
+	dict at: #xml put: pel.
+	dict at: #id put: (pel attributeAt: #id).
+	dict at: #type put: (pel attributeAt: #type).
+	dict at: #height put: (pel attributeAt: #height) asInteger.
+	dict at: #width put: (pel attributeAt: #width) asInteger.
+	tags := (pel elementsAt: #tag) collect: [ :el | 
+		        el innerXML asLowercase ].
+	dict at: #tags put: tags asSet.
+	^ dict
+]
+
+{ #category : #initialization }
 ZipExtraction >> processAllFiles [
 
 	| zips |
@@ -74,6 +90,20 @@ ZipExtraction >> processAllFiles [
 		self log: [ 'Export file: ' , z basename ].
 		self getPostsFrom: z.
 		self saveMediaFrom: z ] 
+]
+
+{ #category : #initialization }
+ZipExtraction >> processXML [
+
+	| doc top posts postElements p |
+	posts := Dictionary new.
+	(xmlFolder filesMatching: '*.xml') do: [ :f | 
+		f readStreamDo: [ :str | doc := XMLDOMParser parse: str ].
+		top := doc root.
+		postElements := top descendantElementsNamed: 'post'.
+		postElements do: [ :pel | 
+			p := self parsePost: pel.
+			posts at: (p at: #id) put: p ] ]. ^posts
 ]
 
 { #category : #initialization }
