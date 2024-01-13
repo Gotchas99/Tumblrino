@@ -1,6 +1,6 @@
 Class {
 	#name : #TuTumblrMain,
-	#superclass : #ComposableModel,
+	#superclass : #SpPresenterWithModel,
 	#instVars : [
 		'buttonLikes',
 		'buttonPosts',

@@ -1,6 +1,6 @@
 Class {
 	#name : #MorphicGifAdapter,
-	#superclass : #AbstractMorphicAdapter,
+	#superclass : #SpAbstractMorphicAdapter,
 	#category : #'CAs-Tumblrino-GUI'
 }
 
