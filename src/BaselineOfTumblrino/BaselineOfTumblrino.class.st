@@ -1,6 +1,6 @@
 Class {
 	#name : #BaselineOfTumblrino,
-	#superclass : #Object,
+	#superclass : #BaselineOf,
 	#category : #BaselineOfTumblrino
 }
 
