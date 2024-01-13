@@ -32,7 +32,7 @@ BaselineOfTumblrino >> defineDependencies: spec [
 		  with: [ spec repository: 'github://pharo-contributions/Soup/' ];
 		  baseline: 'NeoJSON'
 		  with: [ spec repository: 'github://svenvc/NeoJSON/repository' ];
-		  baseline: 'SSO-OAuth1' with: [ 
+		  baseline: 'ZincHTTPComponents' with: [ 
 			  spec
 				  loads: #( 'SSO-OAuth1' );
 				  repository: 'github://svenvc/zinc/repository' ];
