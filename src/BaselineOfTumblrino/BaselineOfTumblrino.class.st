@@ -26,19 +26,25 @@ BaselineOfTumblrino >> defineDependencies: spec [
 
 	^ spec
 		  baseline: 'XMLParser'
-		  with: [ 
+		  with: [
 			  spec repository: 'github://pharo-contributions/XML-XMLParser/src' ];
 		  baseline: 'Soup'
 		  with: [ spec repository: 'github://pharo-contributions/Soup/' ];
 		  baseline: 'NeoJSON'
 		  with: [ spec repository: 'github://svenvc/NeoJSON/repository' ];
-		  baseline: 'ZincHTTPComponents' with: [ 
+		  baseline: 'ZincHTTPComponents' with: [
 			  spec
 				  loads: #( 'SSO-OAuth1' );
 				  repository: 'github://svenvc/zinc/repository' ];
 		  baseline: 'BabyMock2'
 		  with: [ spec repository: 'github://Gotchas99/BabyMock2/src' ];
-		  baseline: 'Seaside' with: [ 
+		
+	
+  baseline: 'Teapot' with:[
+spec  repository: 'github://zeroflag/Teapot/source'];
+
+		
+		  baseline: 'Seaside' with: [
 		  spec
 			  loads: #( 'Core' );
 			  repository: 'github://SeasideSt/Seaside/repository' ];
@@ -54,25 +60,23 @@ BaselineOfTumblrino >> defineDependencies: spec [
 
 { #category : #actions }
 BaselineOfTumblrino >> definePackages: spec [
-
 	"also depends on 'STON-Core' which is currently in the base image"
 
 	^ spec
 		  package: 'CAs-Tumblrino'
-		  with: [ spec requires: #( 'XMLParser' 'NeoJSON' 'ZincHTTPComponents' ) ];
+		  with: [
+			  spec requires: #( 'XMLParser' 'NeoJSON' 'ZincHTTPComponents' ) ];
 		  package: #'CAs-Tumblrino-Gui'
 		  with: [ spec requires: #( 'CAs-Tumblrino' ) ];
 		  package: #'CAs-Tumblrino-Test'
 		  with: [ spec requires: #( 'CAs-Tumblrino' 'BabyMock2' ) ];
 		  package: #'CAs-Tumblrino-Web'
-		  with: [ spec requires: #( 'CAs-Tumblrino' 'Seaside' ) ];
+		  with: [ spec requires: #( 'CAs-Tumblrino' 'Teapot' 'Seaside' ) ];
 		  yourself
 ]
 
 { #category : #actions }
 BaselineOfTumblrino >> loadDeps [
-
-
 	"utility method. not part of baseline itself"
 
 	Metacello new
@@ -88,26 +92,36 @@ BaselineOfTumblrino >> loadDeps [
 	Metacello new
 		baseline: 'Soup';
 		repository: 'github://pharo-contributions/Soup';
-		load
+		load.
+
+Metacello new
+  baseline: 'Teapot';
+  repository: 'github://zeroflag/Teapot/source';
+  load.		
 ]
 
 { #category : #actions }
 BaselineOfTumblrino >> loadSelf [
 
-Metacello new
-  repository: 'github://svenvc/zinc/repository';
-  baseline: 'ZincHTTPComponents';
-  load:'SSO-OAuth1'.
+	Metacello new
+		repository: 'github://svenvc/zinc/repository';
+		baseline: 'ZincHTTPComponents';
+		load: 'SSO-OAuth1'.
 
-Metacello new
-  repository: 'github://pharo-contributions/XML-XMLParser/src';
-  baseline: 'XMLParser';
+	Metacello new
+		repository: 'github://pharo-contributions/XML-XMLParser/src';
+		baseline: 'XMLParser';
+		load.
+
+	Metacello new
+		baseline: 'Soup';
+		repository: 'github://pharo-contributions/Soup';
+		load.
+		
+	Metacello new
+  baseline: 'Teapot';
+  repository: 'github://zeroflag/Teapot/source';
   load.
-
-Metacello new
-	baseline: 'Soup';
-	repository: 'github://pharo-contributions/Soup';
-	load.
 ]
 
 { #category : #actions }
