@@ -1,6 +1,16 @@
+"
+****
+
+****
+
+troligen helt fel superklass !!!!!!!!!!!!!!!!!!!
+
+***************
+************
+"
 Class {
 	#name : #GifModel,
-	#superclass : #AbstractWidgetModel,
+	#superclass : #SpPresenterWithModel,
 	#instVars : [
 		'streamHolder'
 	],

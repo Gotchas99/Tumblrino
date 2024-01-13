@@ -54,18 +54,19 @@ BaselineOfTumblrino >> defineDependencies: spec [
 
 { #category : #actions }
 BaselineOfTumblrino >> definePackages: spec [
+
 	"also depends on 'STON-Core' which is currently in the base image"
 
 	^ spec
-		package: 'CAs-Tumblrino'
-			with: [ spec requires: #('XMLParser' 'NeoJSON' 'SSO-OAuth1') ];
-		package: #'CAs-Tumblrino-Gui'
-			with: [ spec requires: #('CAs-Tumblrino') ];
-		package: #'CAs-Tumblrino-Test'
-			with: [ spec requires: #('CAs-Tumblrino' 'BabyMock2') ];
-		package: #'CAs-Tumblrino-Web'
-			with: [ spec requires: #('CAs-Tumblrino' 'Seaside') ];
-		yourself
+		  package: 'CAs-Tumblrino'
+		  with: [ spec requires: #( 'XMLParser' 'NeoJSON' 'ZincHTTPComponents' ) ];
+		  package: #'CAs-Tumblrino-Gui'
+		  with: [ spec requires: #( 'CAs-Tumblrino' ) ];
+		  package: #'CAs-Tumblrino-Test'
+		  with: [ spec requires: #( 'CAs-Tumblrino' 'BabyMock2' ) ];
+		  package: #'CAs-Tumblrino-Web'
+		  with: [ spec requires: #( 'CAs-Tumblrino' 'Seaside' ) ];
+		  yourself
 ]
 
 { #category : #actions }
