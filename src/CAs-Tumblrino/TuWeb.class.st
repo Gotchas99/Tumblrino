@@ -29,9 +29,9 @@ TuWeb class >> initialize [
 
 { #category : #action }
 TuWeb class >> restartDefault [
-
+<script>
 	self stopDefault.
-	self startDefault
+	^ self startDefault
 ]
 
 { #category : #'system startup' }
@@ -70,8 +70,10 @@ TuWeb class >> stopDefault [
 { #category : #action }
 TuWeb >> start [
 
-	teapot := Teapot on GET: '/welcome' -> 'Hello World!'.
-	teapot  start
+	teapot := Teapot on
+ serveStatic: '/statics' from: TuLibrary default postPath;		          GET: '/welcome' -> 'Hello World!'
+		         .
+	teapot start
 	"(ZnServer startDefaultOn: 1701) delegate:
 		(ZnStaticFileServerDelegate new
 			 directory: TuLibrary default basePath / '_posts';
@@ -82,5 +84,5 @@ TuWeb >> start [
 { #category : #action }
 TuWeb >> stop [
 
-	teapot
+	teapot stop
 ]

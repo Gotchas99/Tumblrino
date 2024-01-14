@@ -20,3 +20,9 @@ TuLibrary >> basePath [
 
 	^ 'D:\Temp\TumblrLibrary\' asFileReference
 ]
+
+{ #category : #accessing }
+TuLibrary >> postPath [
+
+	^ self basePath /'_posts'
+]
