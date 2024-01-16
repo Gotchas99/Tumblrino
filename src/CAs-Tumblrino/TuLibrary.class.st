@@ -81,8 +81,15 @@ TuLibrary >> postsHaving: aTagList butNot: aBlacklist [
 { #category : #accessing }
 TuLibrary >> tags [
 
-	| tmp tmp2 |
+	| tmp tmp2 tmp3 dict res |
 	tmp := likes collect: [ :l | l tags ].
 	tmp2 := tmp flattened.
-	^ tmp2 asSet sorted
+	res := OrderedCollection new.
+	tmp3 := tmp2 asBag sortedElements do: [ :assoc |
+		        dict := Dictionary new.
+		        dict at: #tag put: assoc key.
+		        dict at: #count put: assoc value.
+		        res add: dict ].
+	self crTrace: 'Tags accessed'. 
+	^ res
 ]
