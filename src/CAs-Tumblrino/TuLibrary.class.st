@@ -24,7 +24,7 @@ TuLibrary >> basePath [
 	^ 'D:\Temp\TumblrLibrary\' asFileReference
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 TuLibrary >> fetchLikes [
 
 	| api  |
@@ -34,6 +34,16 @@ TuLibrary >> fetchLikes [
 		p
 			load;
 			saveToFile ]
+]
+
+{ #category : #accessing }
+TuLibrary >> post: anID [
+
+	| post dict |
+	post := likes detect: [ :l | l id = anID asInteger ].
+	dict := Dictionary new.
+	dict at:#tags put: post tags.
+	^ dict
 ]
 
 { #category : #accessing }
@@ -51,13 +61,16 @@ TuLibrary >> posts [
 { #category : #accessing }
 TuLibrary >> postsHaving: aTagList butNot: aBlacklist [
 
-	| res |
+	| res ids |
 	self traceCr: aTagList.
+	aTagList isEmpty ifTrue: [self traceCr: 'empty taglist'. ^ #(  ) ].
 	res := likes.
 	','
 		split: aTagList
 		do: [ :tag | res := res select: [ :p | p hasTag: tag ] ].
-	^ res collect: [ :p | p id ]
+	ids := res collect: [ :p | p id asString ].
+	self traceCr: ids.
+	^ ids
 ]
 
 { #category : #accessing }

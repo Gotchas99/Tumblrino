@@ -81,7 +81,11 @@ TuWeb >> start [
 		GET: '/posts' -> [ :req |
 				TuLibrary default
 					postsHaving: (req at: #having)
-					butNot: (req at: #not) ].
+					butNot: (req at: #not) ];
+				GET: '/post' -> [ :req |
+				TuLibrary default
+					post: (req at: #id)
+ ].
 	teapot start
 	"(ZnServer startDefaultOn: 1701) delegate:
 		(ZnStaticFileServerDelegate new
