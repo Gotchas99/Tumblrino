@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'type',
 		'owner',
-		'extent'
+		'extent',
+		'path'
 	],
 	#category : #'CAs-Tumblrino-Core'
 }
@@ -43,11 +44,22 @@ TuTumblrMedia >> parseJson [
 ]
 
 { #category : #accessing }
+TuTumblrMedia >> path [
+
+	| url fref |
+	^ path ifNil:[	url := self url asUrl.
+	fref := (owner path / url lastPathSegment) asFileReference.
+	path := fref.
+]
+]
+
+{ #category : #accessing }
 TuTumblrMedia >> saveToFile [
 
 	| url fref |
 	url := self url asUrl.
 	fref := (owner path / url lastPathSegment) asFileReference.
+	path:=fref.
 	fref exists ifTrue: [ ^ self ].
 	self crTrace: 'Saving: ' , fref fullName.
 	url saveContentsToFile: fref

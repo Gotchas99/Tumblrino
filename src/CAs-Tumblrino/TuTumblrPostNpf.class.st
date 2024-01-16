@@ -38,7 +38,20 @@ TuTumblrPostNpf >> hasTag: aTag [
 TuTumblrPostNpf >> id: anId [
 
 	super id: anId.
-	path := TuLibrary default basePath  / '_posts' / anId
+	path := TuLibrary default postPath / anId
+]
+
+{ #category : #accessing }
+TuTumblrPostNpf >> imgPaths [
+
+	| tmp |
+	tmp := content
+		       select: [ :c | c class = TuTumblrImage ]
+		       thenCollect: [ :c | c media first ].
+	tmp := tmp collect: [ :m | m path relativeTo: TuLibrary default postPath ].
+	tmp := tmp collect: [ :p |
+		       'http://localhost:1701/statics/' , p pathString ].
+	^ tmp
 ]
 
 { #category : #initialization }

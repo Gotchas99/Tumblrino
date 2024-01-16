@@ -42,7 +42,10 @@ TuLibrary >> post: anID [
 	| post dict |
 	post := likes detect: [ :l | l id = anID asInteger ].
 	dict := Dictionary new.
-	dict at:#tags put: post tags.
+	dict
+		at: #id put: post id asString;
+		at: #imgPaths put: post imgPaths;
+	 at: #tags put: post tags.
 	^ dict
 ]
 
