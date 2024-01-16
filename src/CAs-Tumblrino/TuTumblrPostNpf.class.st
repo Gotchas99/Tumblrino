@@ -28,6 +28,12 @@ TuTumblrPostNpf >> content [
 	^ content
 ]
 
+{ #category : #testing }
+TuTumblrPostNpf >> hasTag: aTag [
+ 
+	^ tags includes: aTag
+]
+
 { #category : #accessing }
 TuTumblrPostNpf >> id: anId [
 

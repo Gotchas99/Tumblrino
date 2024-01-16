@@ -51,7 +51,13 @@ TuLibrary >> posts [
 { #category : #accessing }
 TuLibrary >> postsHaving: aTagList butNot: aBlacklist [
 
-	^#()
+	| res |
+	self traceCr: aTagList.
+	res := likes.
+	','
+		split: aTagList
+		do: [ :tag | res := res select: [ :p | p hasTag: tag ] ].
+	^ res collect: [ :p | p id ]
 ]
 
 { #category : #accessing }
