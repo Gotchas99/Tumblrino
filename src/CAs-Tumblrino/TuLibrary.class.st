@@ -66,12 +66,14 @@ TuLibrary >> postsHaving: aTagList butNot: aBlacklist [
 
 	| res ids |
 	self traceCr: aTagList.
-	aTagList isEmpty ifTrue: [self traceCr: 'empty taglist'. ^ #(  ) ].
+	aTagList isEmpty ifTrue: [
+		self traceCr: 'empty taglist'.
+		^ #(  ) ].
 	res := likes.
 	','
 		split: aTagList
 		do: [ :tag | res := res select: [ :p | p hasTag: tag ] ].
-	ids := res collect: [ :p | p id asString ].
+	ids := res collect: [ :p | {(#id -> p id asString)}asDictionary ].
 	self traceCr: ids.
 	^ ids
 ]
