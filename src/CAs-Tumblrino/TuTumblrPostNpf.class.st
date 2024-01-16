@@ -4,8 +4,8 @@ Class {
 	#instVars : [
 		'blogId',
 		'content',
-		'trail',
-		'path'
+		'path',
+		'tags'
 	],
 	#category : #'CAs-Tumblrino-Core'
 }
@@ -64,6 +64,7 @@ TuTumblrPostNpf >> load [
 { #category : #action }
 TuTumblrPostNpf >> parseJson [
 
+	| trail tmp |
 	super parseJson.
 	self blogId: (json at: #blog at: #uuid).
 	"self blogId: (json at: #tumblelog_uuid)."
@@ -73,7 +74,8 @@ TuTumblrPostNpf >> parseJson [
 		trail := (tr collect: [ :each |
 			          (each at: #content) collect: [ :m |
 				          TuTumblrContent from: m ] ]) flattened.
-		content := content , trail ] 
+		content := content , trail ].
+	tmp := json at: #tags.tags:=  tmp collect:[:t|t asLowercase ].
 ]
 
 { #category : #accessing }
@@ -107,5 +109,6 @@ TuTumblrPostNpf >> summary [
 
 { #category : #accessing }
 TuTumblrPostNpf >> tags [
-^json at:#tags
+
+	^ tags
 ]

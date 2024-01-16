@@ -70,9 +70,16 @@ TuWeb class >> stopDefault [
 { #category : #action }
 TuWeb >> start [
 
-	teapot := Teapot on
- serveStatic: '/statics' from: TuLibrary default postPath;		          GET: '/welcome' -> 'Hello World!'
-		         .
+	teapot := Teapot configure: {
+			          (#defaultOutput -> #json).
+			          (#debugMode -> true) }.
+	teapot
+		after: '/*'
+			-> [ :req :resp |
+				resp headers at: 'Access-Control-Allow-Origin' put: '*' ];
+		serveStatic: '/statics' from: TuLibrary default postPath;
+		GET: '/tags' -> TuLibrary default tags;
+		GET: '/welcome' -> 'Hello World!'.
 	teapot start
 	"(ZnServer startDefaultOn: 1701) delegate:
 		(ZnStaticFileServerDelegate new

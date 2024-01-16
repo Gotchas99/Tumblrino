@@ -49,7 +49,7 @@ TuTumblrMedia >> saveToFile [
 	url := self url asUrl.
 	fref := (owner path / url lastPathSegment) asFileReference.
 	fref exists ifTrue: [ ^ self ].
-	self crTrace: 'Saving: ', fref fullName.
+	self crTrace: 'Saving: ' , fref fullName.
 	url saveContentsToFile: fref
 ]
 
