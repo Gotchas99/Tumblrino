@@ -3,9 +3,9 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'basePath',
-		'tags',
 		'posts',
-		'likes'
+		'likes',
+		'origTags'
 	],
 	#classVars : [
 		'Default'
@@ -40,12 +40,13 @@ TuLibrary >> fetchLikes [
 TuLibrary >> post: anID [
 
 	| post dict |
+	self traceCr: 'Retrieving post: ' , anID.
 	post := likes detect: [ :l | l id = anID asInteger ].
 	dict := Dictionary new.
 	dict
 		at: #id put: post id asString;
 		at: #imgPaths put: post imgPaths;
-	 at: #tags put: post tags.
+		at: #tags put: post tags.
 	^ dict
 ]
 
@@ -65,15 +66,15 @@ TuLibrary >> posts [
 TuLibrary >> postsHaving: aTagList butNot: aBlacklist [
 
 	| res ids |
-	self traceCr: aTagList.
 	aTagList isEmpty ifTrue: [
-		self traceCr: 'empty taglist'.
-		^ #(  ) ].
+		self traceCr: '<empty taglist>'.
+		res := likes select: [ :p | p hasNoTag ] ]ifFalse:[
+	self traceCr: aTagList.
 	res := likes.
 	','
 		split: aTagList
-		do: [ :tag | res := res select: [ :p | p hasTag: tag ] ].
-	ids := res collect: [ :p | {(#id -> p id asString)}asDictionary ].
+		do: [ :tag | res := res select: [ :p | p hasTag: tag ] ]].
+	ids := res collect: [ :p | { (#id -> p id asString) } asDictionary ].
 	self traceCr: ids.
 	^ ids
 ]
@@ -82,6 +83,7 @@ TuLibrary >> postsHaving: aTagList butNot: aBlacklist [
 TuLibrary >> tags [
 
 	| tmp tmp2 tmp3 dict res |
+	self traceCr: 'Tags accessed'.
 	tmp := likes collect: [ :l | l tags ].
 	tmp2 := tmp flattened.
 	res := OrderedCollection new.
@@ -90,6 +92,6 @@ TuLibrary >> tags [
 		        dict at: #tag put: assoc key.
 		        dict at: #count put: assoc value.
 		        res add: dict ].
-	self crTrace: 'Tags accessed'. 
+	
 	^ res
 ]

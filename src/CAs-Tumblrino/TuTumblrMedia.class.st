@@ -5,7 +5,10 @@ Class {
 		'type',
 		'owner',
 		'extent',
-		'path'
+		'path',
+		'cropped',
+		'origDimension',
+		'url'
 	],
 	#category : #'CAs-Tumblrino-Core'
 }
@@ -18,15 +21,16 @@ TuTumblrMedia >> <= other [
 { #category : #testing }
 TuTumblrMedia >> cropped [
 
-	^ json at: #cropped ifAbsent: [ false ]
+	^ cropped ifNil:[cropped:=json at: #cropped ifAbsent: [ false ]]
 ]
 
 { #category : #testing }
-TuTumblrMedia >> hasOriginalDimensions [ 
-^(json at: #height ifAbsent: [false])
+TuTumblrMedia >> hasOriginalDimensions [
+
+	^ origDimension ifNil: [ origDimension := json at: #origDimension ifAbsent: [ false ] ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TuTumblrMedia >> idTag [ ^#url
 ]
 
@@ -38,9 +42,12 @@ owner:=aContent
 { #category : #parsing }
 TuTumblrMedia >> parseJson [
 
-	super parseJson..
-	type := (json at: #type).
-	extent := (json at: #width) @ (json at: #height)
+	super parseJson.
+	url:= json at:#url.
+	type := json at: #type.
+	extent := (json at: #width) @ (json at: #height).
+	cropped := json at: #cropped ifAbsent: [ false ].
+	 origDimension := json at: #origDimension ifAbsent: [ false ].
 ]
 
 { #category : #accessing }
@@ -53,7 +60,7 @@ TuTumblrMedia >> path [
 ]
 ]
 
-{ #category : #accessing }
+{ #category : #action }
 TuTumblrMedia >> saveToFile [
 
 	| url fref |
@@ -71,5 +78,7 @@ TuTumblrMedia >> size [
 ]
 
 { #category : #accessing }
-TuTumblrMedia >> url [ ^(json at: #url)
+TuTumblrMedia >> url [
+
+	^ url ifNil:[url:=url := json at: #url.]
 ]

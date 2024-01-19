@@ -29,6 +29,12 @@ TuTumblrPostNpf >> content [
 ]
 
 { #category : #testing }
+TuTumblrPostNpf >> hasNoTag [
+
+	^ tags isEmpty
+]
+
+{ #category : #testing }
 TuTumblrPostNpf >> hasTag: aTag [
  
 	^ tags includes: aTag
