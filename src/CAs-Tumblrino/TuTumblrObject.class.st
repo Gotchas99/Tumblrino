@@ -13,19 +13,19 @@ TuTumblrObject class >> from: aJson [
 	^ self new setJson: aJson
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TuTumblrObject >> id [
 
-	^ id 
+	^ id asString
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TuTumblrObject >> id: anId [
 
 	id := anId asString
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TuTumblrObject >> idTag [
 
 	^ #id

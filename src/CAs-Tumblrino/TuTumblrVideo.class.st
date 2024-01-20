@@ -34,9 +34,6 @@ TuTumblrVideo >> saveToFile [
 	{
 		poster.
 		filmstrip.
-		media } do: [ :each | each ifNotNil: [ each owner: owner ] ].
-	{
-		poster.
-		filmstrip.
-		media } do: [ :each | each ifNotNil: [ each saveToFile ] ]
+		media } do: [ :each | each ifNotNil: [ each owner: owner.each saveToFile ] ].
+
 ]

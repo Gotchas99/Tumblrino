@@ -22,12 +22,12 @@ TuTumblrImage >> filename [
 	^ tmp copyWithout: $/
 ]
 
-{ #category : #accessing }
+{ #category : #gui }
 TuTumblrImage >> form [
 	^ form ifNil: [ self getForms ]
 ]
 
-{ #category : #accessing }
+{ #category : #gui }
 TuTumblrImage >> forms [
 	^ forms ifNil: [ self getForms ]
 ]
@@ -40,21 +40,21 @@ TuTumblrImage >> fullFilename [
 	^ tmp printWithDelimiter: $\
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #gui }
 TuTumblrImage >> getForms [
-	(self url endsWith: '.gif')
-		ifTrue: [ forms := (AnimatedGIFReadWriter formsFromStream: self stream) forms.
-			form := forms first.
-			^ forms ].
-	(self url endsWith: '.jpg')
-		ifTrue: [ 
-			form := ImageReadWriter formFromStream: self stream.
-			forms := {form}.
-			^ form ].
-	self halt
+
+	"(self url endsWith: '.gif') ifTrue: [
+		forms := (AnimatedGIFReadWriter formsFromStream: self stream) forms.
+		form := forms first.
+		^ forms ].
+	(self url endsWith: '.jpg') ifTrue: [
+		form := ImageReadWriter formFromStream: self stream.
+		forms := { form }.
+		^ form ].
+	self halt"
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #gui }
 TuTumblrImage >> getStream [
 	| url gifBytes gifStream fref |
 	fref := self fullFilename asFileReference.
@@ -112,7 +112,7 @@ url := (json at: #media) first at: #url.
 	id:= url asUrl firstPathSegment .
 ]
 
-{ #category : #accessing }
+{ #category : #gui }
 TuTumblrImage >> stream [
 	^ stream ifNil: [ self getStream ]
 ]

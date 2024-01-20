@@ -41,7 +41,7 @@ TuLibrary >> post: anID [
 
 	| post dict |
 	self traceCr: 'Retrieving post: ' , anID.
-	post := likes detect: [ :l | l id = anID asInteger ].
+	post := likes detect: [ :l | l id = anID  ].
 	dict := Dictionary new.
 	dict
 		at: #id put: post id asString;

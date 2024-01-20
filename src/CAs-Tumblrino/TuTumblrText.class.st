@@ -1,6 +1,9 @@
 Class {
 	#name : #TuTumblrText,
 	#superclass : #TuTumblrContent,
+	#instVars : [
+		'text'
+	],
 	#category : #'CAs-Tumblrino-Core'
 }
 
@@ -14,5 +17,5 @@ TuTumblrText >> saveToFile [
 { #category : #accessing }
 TuTumblrText >> text [
 
-	^ json at: #text
+	^ text ifNil:[text:=json at: #text]
 ]
