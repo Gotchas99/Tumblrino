@@ -104,7 +104,9 @@ TuTumblrPostNpf >> parseJson [
 		trail := (tr collect: [ :each |
 			          (each at: #content) collect: [ :m |
 				          TuTumblrContent from: m ] ]) flattened.
-		content := content , trail ].
+		content := content , trail ].content do: [ :cont |
+		cont owner: self.
+	 ].
 	tmp := json at: #tags.
 	tags := tmp collect: [ :t | t asLowercase ]
 ]
@@ -120,11 +122,11 @@ TuTumblrPostNpf >> saveToFile [
 	self isLoaded ifFalse: [ Error signal: 'not loaded' ].
 	path ensureCreateDirectory.
 	fref := (path / 'content.json') asFileReference.
-	"	fref exists ifTrue: [ ^ self ]."
+		fref exists ifFalse: [ 
 	self crTrace: 'Saving: ' , fref fullName.
 	fref writeStreamDo: [ :s |
 		tmp := NeoJSONWriter toString: json.
-		s << tmp ].
+		s << tmp ]].
 	content do: [ :cont |
 		cont owner: self.
 		cont saveToFile ]
