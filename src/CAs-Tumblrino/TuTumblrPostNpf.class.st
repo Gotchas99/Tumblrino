@@ -128,6 +128,14 @@ TuTumblrPostNpf >> path [ ^path
 ]
 
 { #category : #action }
+TuTumblrPostNpf >> saveToDb [
+
+"	TuDB default writePost: self"
+	| msg |
+	msg:=Message selector: #writePost: argument: self dbData .
+]
+
+{ #category : #action }
 TuTumblrPostNpf >> saveToFile [
 
 	| fref tmp |

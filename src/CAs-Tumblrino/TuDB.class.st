@@ -3,7 +3,9 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'db',
-		'conn'
+		'conn',
+		'writeQ',
+		'writeProcess'
 	],
 	#classVars : [
 		'Default'
@@ -118,6 +120,16 @@ TuDB >> ensureLibrary [
 	fromName copyTo: toName
 ]
 
+{ #category : #initialization }
+TuDB >> initialize [
+
+	
+	writeQ := AtomicSharedQueue new.
+	writeProcess := [| msg |
+	                msg := writeQ next.
+	                msg sendTo: self ] forkAt: 33 named: #dbWriter
+]
+
 { #category : #'connection handling' }
 TuDB >> open [
 
@@ -133,6 +145,11 @@ TuDB >> postExists: aPostId [
 	sql := 'select count(0) from posts where id=' , aPostId asString.
 	db execute: sql doing: [  :cursor|tmp := cursor onlyValue = 1 ].
 	^ tmp
+]
+
+{ #category : #operations }
+TuDB >> queueWrite:aMsg [
+writeQ nextPut: aMsg 
 ]
 
 { #category : #schema }
@@ -169,12 +186,12 @@ TuDB >> tableExists: tableName [
 	^ db tables anySatisfy: [ :t | t name = tableName ] 
 ]
 
-{ #category : #testing }
-TuDB >> writePost: aPost [
+{ #category : #operations }
+TuDB >> writePost: aPostData [
 
 	| sql |
 	sql := 'INSERT INTO posts(id, blog_id, tags) VALUES (:id, :blog_id, :tags)
 		ON CONFLICT (id) DO
 		UPDATE SET blog_id=excluded.blog_id, tags=excluded.tags;'.
-	db connection execute: sql with: aPost dbData
+	db connection execute: sql with: aPostData
 ]
