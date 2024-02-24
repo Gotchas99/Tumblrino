@@ -93,6 +93,13 @@ TuDB >> dropPosts [
 	conn execute: 'DROP TABLE posts'
 ]
 
+{ #category : #schema }
+TuDB >> ensureColumn: colName type: colType inTable: tblName [
+
+	(self colExists: colName inTable: tblName) ifTrue: [ ^ self ].
+	db execute: 'ALTER TABLE '.tblName .' ADD COLUMN '.colName.' '.colType 
+]
+
 { #category : #initialization }
 TuDB >> ensureLibrary [
 
@@ -130,8 +137,8 @@ TuDB >> setupMedia [
 TuDB >> setupPosts [
 
 	self createPosts.
-	(self colExists: #tags inTable: #posts) ifFalse: [
-		db execute: 'ALTER TABLE posts ADD COLUMN tags TEXT' ]
+	self ensureColumn: #tags type: #TEXT inTable: #posts.
+	
 ]
 
 { #category : #schema }
