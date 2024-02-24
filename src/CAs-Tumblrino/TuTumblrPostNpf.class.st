@@ -129,10 +129,11 @@ TuTumblrPostNpf >> path [ ^path
 
 { #category : #action }
 TuTumblrPostNpf >> saveToDb [
+	"	TuDB default writePost: self"
 
-"	TuDB default writePost: self"
 	| msg |
-	msg:=Message selector: #writePost: argument: self dbData .
+	msg := Message selector: #writePost: argument: self dbData.
+	TuDB default queueWrite: msg.
 ]
 
 { #category : #action }

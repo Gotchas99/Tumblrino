@@ -48,6 +48,8 @@ self default ensureLibrary .
 TuDB >> close [
 
 	db ifNotNil: [
+		writeProcess terminate.
+		writeQ flush.
 		db close.
 		self traceCr: 'db closed'.
 		db := nil ]
@@ -123,19 +125,26 @@ TuDB >> ensureLibrary [
 { #category : #initialization }
 TuDB >> initialize [
 
-	
 	writeQ := AtomicSharedQueue new.
-	writeProcess := [| msg |
-	                msg := writeQ next.
-	                msg sendTo: self ] forkAt: 33 named: #dbWriter
+
 ]
 
 { #category : #'connection handling' }
 TuDB >> open [
 
 	db ifNotNil: [ db connection isOpen ifTrue: [ ^ self ] ].
-db := SQLite3Database  openOn: self dbFilename pathString.
-	self traceCr: 'db opened'
+	db := SQLite3Database openOn: self dbFilename pathString.
+	conn := db connection.
+		writeProcess := [
+	                [
+	                | msg |
+	                msg := writeQ next.
+	                self traceCr: 'get, writeQ: ' , writeQ size asString.
+	                msg sendTo: self ] repeat.
+	                self traceCr: 'writeProcess died' ]
+		                forkAt: 33
+		                named: #dbWriter
+.	self traceCr: 'db opened'
 ]
 
 { #category : #testing }
@@ -148,8 +157,10 @@ TuDB >> postExists: aPostId [
 ]
 
 { #category : #operations }
-TuDB >> queueWrite:aMsg [
-writeQ nextPut: aMsg 
+TuDB >> queueWrite: aMsg [
+
+	writeQ nextPut: aMsg.
+	self traceCr: 'add, writeQ: ' , writeQ size asString
 ]
 
 { #category : #schema }
