@@ -176,5 +176,5 @@ TuDB >> writePost: aPost [
 	sql := 'INSERT INTO posts(id, blog_id, tags) VALUES (:id, :blog_id, :tags)
 		ON CONFLICT (id) DO
 		UPDATE SET blog_id=excluded.blog_id, tags=excluded.tags;'.
-	db execute: sql with: aPost dbData
+	db connection execute: sql with: aPost dbData
 ]
