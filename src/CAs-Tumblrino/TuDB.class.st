@@ -97,7 +97,12 @@ TuDB >> dropPosts [
 TuDB >> ensureColumn: colName type: colType inTable: tblName [
 
 	(self colExists: colName inTable: tblName) ifTrue: [ ^ self ].
-	db execute: 'ALTER TABLE '.tblName .' ADD COLUMN '.colName.' '.colType 
+	db execute: 'ALTER TABLE ',
+	tblName,
+	' ADD COLUMN ',
+	colName,
+	' ',
+	colType
 ]
 
 { #category : #initialization }
@@ -153,4 +158,8 @@ TuDB >> setupSchema [
 TuDB >> tableExists: tableName [
 
 	^ db tables anySatisfy: [ :t | t name = tableName ] 
+]
+
+{ #category : #accessing }
+TuDB >> writePost:anNpfPost [
 ]
