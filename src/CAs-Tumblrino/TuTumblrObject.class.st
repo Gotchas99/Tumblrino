@@ -22,6 +22,12 @@ TuTumblrObject >> id [
 { #category : #accessing }
 TuTumblrObject >> id: anId [
 
+	self
+		deprecated: 'Use #setId instead'
+		on: '24 February 2024'
+		in:
+		'Pharo-11.0.0+build.720.sha.dc4ec9ea9b9b8d3802b5fa1e3666815b9208b589 (64 Bit)'.
+
 	id := anId asString
 ]
 

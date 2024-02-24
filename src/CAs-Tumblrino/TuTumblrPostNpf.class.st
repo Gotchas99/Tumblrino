@@ -43,6 +43,12 @@ TuTumblrPostNpf >> hasTag: aTag [
 { #category : #accessing }
 TuTumblrPostNpf >> id: anId [
 
+	self
+		deprecated: 'Use #setId instead'
+		on: '24 February 2024'
+		in:
+		'Pharo-11.0.0+build.720.sha.dc4ec9ea9b9b8d3802b5fa1e3666815b9208b589 (64 Bit)'.
+
 	super id: anId.
 	path := TuLibrary default postPath / anId
 ]
@@ -92,7 +98,6 @@ TuTumblrPostNpf >> parseJson [
 	| trail tmp |
 	super parseJson.
 	self blogId: (json at: #blog at: #uuid).
-	"self blogId: (json at: #tumblelog_uuid)."
 	content := (json at: #content) collect: [ :each |
 		           TuTumblrContent from: each ].
 	json at: #trail ifPresent: [ :tr |
@@ -100,7 +105,8 @@ TuTumblrPostNpf >> parseJson [
 			          (each at: #content) collect: [ :m |
 				          TuTumblrContent from: m ] ]) flattened.
 		content := content , trail ].
-	tmp := json at: #tags.tags:=  tmp collect:[:t|t asLowercase ].
+	tmp := json at: #tags.
+	tags := tmp collect: [ :t | t asLowercase ]
 ]
 
 { #category : #accessing }
