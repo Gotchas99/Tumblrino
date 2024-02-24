@@ -20,11 +20,9 @@ TuWeb class >> default [
 { #category : #'class initialization' }
 TuWeb class >> initialize [
 
-	
 	AlwaysRestart := true.
-	(self environment
-		at: #SessionManager)
-		default registerNetworkClassNamed: self name 
+SessionManager default
+		registerUserClassNamed: self name
 ]
 
 { #category : #action }
@@ -54,7 +52,7 @@ TuWeb class >> startUp: resuming [
 	We do this using deferred startup actions to allow normal error handling."
 
 	(resuming or: [ AlwaysRestart ]) ifTrue: [
-		(self environment at: #SessionManager) default currentSession
+	SessionManager default currentSession
 			addDeferredStartupAction: [ self startDefault ] ]
 ]
 

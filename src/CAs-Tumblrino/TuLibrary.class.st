@@ -2,10 +2,7 @@ Class {
 	#name : #TuLibrary,
 	#superclass : #Object,
 	#instVars : [
-		'basePath',
-		'posts',
-		'likes',
-		'origTags'
+		'posts'
 	],
 	#classVars : [
 		'Default'
@@ -29,8 +26,8 @@ TuLibrary >> fetchLikes [
 
 	| api  |
 	api := TuTumblrClient default.
-	likes := api likes.
-	likes do: [ :p |
+	posts := api likes.
+	posts do: [ :p |
 		p
 			load;
 			saveToFile ]
@@ -41,7 +38,7 @@ TuLibrary >> post: anID [
 
 	| post dict |
 	self traceCr: 'Retrieving post: ' , anID.
-	post := likes detect: [ :l | l id = anID  ].
+	post := posts detect: [ :l | l id = anID  ].
 	dict := Dictionary new.
 	dict
 		at: #id put: post id asString;
@@ -59,7 +56,7 @@ TuLibrary >> postPath [
 { #category : #accessing }
 TuLibrary >> posts [
 
-	^likes
+	^posts
 ]
 
 { #category : #accessing }
@@ -68,9 +65,9 @@ TuLibrary >> postsHaving: aTagList butNot: aBlacklist [
 	| res ids |
 	aTagList isEmpty ifTrue: [
 		self traceCr: '<empty taglist>'.
-		res := likes select: [ :p | p hasNoTag ] ]ifFalse:[
+		res := posts select: [ :p | p hasNoTag ] ]ifFalse:[
 	self traceCr: aTagList.
-	res := likes.
+	res := posts.
 	','
 		split: aTagList
 		do: [ :tag | res := res select: [ :p | p hasTag: tag ] ]].
@@ -84,7 +81,7 @@ TuLibrary >> tags [
 
 	| tmp tmp2 tmp3 dict res |
 	self traceCr: 'Tags accessed'.
-	tmp := likes collect: [ :l | l tags ].
+	tmp := posts collect: [ :l | l tags ].
 	tmp2 := tmp flattened.
 	res := OrderedCollection new.
 	tmp3 := tmp2 asBag sortedElements do: [ :assoc |

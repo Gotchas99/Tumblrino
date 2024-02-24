@@ -110,11 +110,16 @@ TuTumblrPostNpf >> path [ ^path
 { #category : #action }
 TuTumblrPostNpf >> saveToFile [
 
-	| dir |
+	| fref tmp |
 	self isLoaded ifFalse: [ Error signal: 'not loaded' ].
-	dir := path .
-	dir ensureCreateDirectory.
-	content do: [ :cont | 
+	path ensureCreateDirectory.
+	fref := (path / 'content.json') asFileReference.
+	"	fref exists ifTrue: [ ^ self ]."
+	self crTrace: 'Saving: ' , fref fullName.
+	fref writeStreamDo: [ :s |
+		tmp := NeoJSONWriter toString: json.
+		s << tmp ].
+	content do: [ :cont |
 		cont owner: self.
 		cont saveToFile ]
 ]
@@ -123,7 +128,7 @@ TuTumblrPostNpf >> saveToFile [
 TuTumblrPostNpf >> setId [
 
 	super setId.
-	path := TuLibrary default basePath / '_posts' / id asString
+	path := TuLibrary default postPath / id asString
 ]
 
 { #category : #accessing }

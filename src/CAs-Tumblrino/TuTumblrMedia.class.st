@@ -43,11 +43,11 @@ owner:=aContent
 TuTumblrMedia >> parseJson [
 
 	super parseJson.
-	url:= json at:#url.
+	url := (json at: #url)asUrl .
 	type := json at: #type.
 	extent := (json at: #width) @ (json at: #height).
 	cropped := json at: #cropped ifAbsent: [ false ].
-	 origDimension := json at: #origDimension ifAbsent: [ false ].
+	origDimension := json at: #origDimension ifAbsent: [ false ]
 ]
 
 { #category : #accessing }
@@ -63,10 +63,9 @@ TuTumblrMedia >> path [
 { #category : #action }
 TuTumblrMedia >> saveToFile [
 
-	| url fref |
-	url := self url asUrl.
-	fref := (owner path / url lastPathSegment) asFileReference.
-	path:=fref.
+	|  fref |
+	fref := (owner path / url asUrl lastPathSegment) asFileReference.
+	path := fref.
 	fref exists ifTrue: [ ^ self ].
 	self crTrace: 'Saving: ' , fref fullName.
 	url saveContentsToFile: fref
