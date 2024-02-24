@@ -24,13 +24,14 @@ TuLibrary >> basePath [
 { #category : #action }
 TuLibrary >> fetchLikes [
 
-	| api  |
+	| api likes |
 	api := TuTumblrClient default.
-	posts := api likes.
-	posts do: [ :p |
-		p
+	likes := api likes.
+	likes do: [ :l |
+(		posts anySatisfy:  [ :p | p id = l id ])ifFalse:[
+		l
 			load;
-			saveToFile ]
+			saveToFile ]]
 ]
 
 { #category : #accessing }
@@ -38,7 +39,7 @@ TuLibrary >> post: anID [
 
 	| post dict |
 	self traceCr: 'Retrieving post: ' , anID.
-	post := posts detect: [ :l | l id = anID  ].
+	post := posts detect: [ :p | p id = anID ].
 	dict := Dictionary new.
 	dict
 		at: #id put: post id asString;
@@ -81,7 +82,7 @@ TuLibrary >> tags [
 
 	| tmp tmp2 tmp3 dict res |
 	self traceCr: 'Tags accessed'.
-	tmp := posts collect: [ :l | l tags ].
+	tmp := posts collect: [ :p | p tags ].
 	tmp2 := tmp flattened.
 	res := OrderedCollection new.
 	tmp3 := tmp2 asBag sortedElements do: [ :assoc |
@@ -89,6 +90,6 @@ TuLibrary >> tags [
 		        dict at: #tag put: assoc key.
 		        dict at: #count put: assoc value.
 		        res add: dict ].
-	
+
 	^ res
 ]

@@ -122,13 +122,6 @@ TuTumblrClient >> apiV2 [
 ]
 
 { #category : #actions }
-TuTumblrClient >> blogInfo [
-
-
-	^ self blogInfo: 'henk-heijmans'
-]
-
-{ #category : #actions }
 TuTumblrClient >> blogInfo: aBlogID [
 
 	| url json blog |
@@ -137,6 +130,13 @@ TuTumblrClient >> blogInfo: aBlogID [
 	blog := json at: 'blog'.
 	blog := TuTumblrBlog from: (json at: #blog).
 	^ blog
+]
+
+{ #category : #actions }
+TuTumblrClient >> blogInfoSample [
+
+
+	^ self blogInfo: 'henk-heijmans'
 ]
 
 { #category : #OAuth1 }
