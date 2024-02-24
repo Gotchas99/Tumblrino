@@ -38,8 +38,8 @@ TuLibrary >> fetchLikes [
 TuLibrary >> post: anID [
 
 	| post dict |
-	self traceCr: 'Retrieving post: ' , anID.
-	post := posts detect: [ :p | p id = anID ].
+	self traceCr: 'Retrieving post: ' , anID asString.
+	post := posts detect: [ :p | p id = anID asString ].
 	dict := Dictionary new.
 	dict
 		at: #id put: post id asString;
