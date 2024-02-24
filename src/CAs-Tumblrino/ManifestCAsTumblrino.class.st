@@ -8,6 +8,13 @@ Class {
 }
 
 { #category : #'code-critics' }
+ManifestCAsTumblrino class >> ruleTempsReadBeforeWrittenRuleV1FalsePositive [
+
+	<ignoreForCoverage>
+	^ #(#(#(#RGMethodDefinition #(#TuDB #postExists: #false)) #'2024-02-24T10:12:08.99+01:00') )
+]
+
+{ #category : #'code-critics' }
 ManifestCAsTumblrino class >> ruleUncommonMessageSendRuleV1FalsePositive [
 
 	<ignoreForCoverage>

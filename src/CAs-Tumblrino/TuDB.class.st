@@ -126,6 +126,15 @@ db := SQLite3Database  openOn: self dbFilename pathString.
 	self traceCr: 'db opened'
 ]
 
+{ #category : #testing }
+TuDB >> postExists: aPostId [
+
+	| sql tmp |
+	sql := 'select count(0) from posts where id=' , aPostId asString.
+	db execute: sql doing: [  :cursor|tmp := cursor onlyValue = 1 ].
+	^ tmp
+]
+
 { #category : #schema }
 TuDB >> setupContent [
 
@@ -154,7 +163,7 @@ TuDB >> setupSchema [
 	self setupMedia 
 ]
 
-{ #category : #schema }
+{ #category : #testing }
 TuDB >> tableExists: tableName [
 
 	^ db tables anySatisfy: [ :t | t name = tableName ] 
