@@ -28,6 +28,17 @@ TuTumblrPostNpf >> content [
 	^ content
 ]
 
+{ #category : #'as yet unclassified' }
+TuTumblrPostNpf >> dbData [
+| dict tagString |
+dict:= Dictionary new. dict at:#id put:id.
+dict at: #blog_id put: blogId .
+tagString:= '|' join: tags.
+dict at: #tags put:tagString.
+self halt.
+	
+]
+
 { #category : #testing }
 TuTumblrPostNpf >> hasNoTag [
 

@@ -169,6 +169,12 @@ TuDB >> tableExists: tableName [
 	^ db tables anySatisfy: [ :t | t name = tableName ] 
 ]
 
-{ #category : #accessing }
-TuDB >> writePost:anNpfPost [
+{ #category : #testing }
+TuDB >> writePost: aPost [
+
+	| sql |
+	sql := 'INSERT INTO posts(id, blog_id, tags) VALUES (:id, :blog_id, :tags)
+		ON CONFLICT (id) DO
+		UPDATE SET blog_id=excluded.blog_id, tags=excluded.tags;'.
+	db execute: sql with: aPost dbData
 ]
