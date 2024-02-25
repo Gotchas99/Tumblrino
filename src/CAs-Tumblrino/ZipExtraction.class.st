@@ -75,9 +75,23 @@ ZipExtraction >> parsePost: pel [
 	dict at: #type put: (pel attributeAt: #type).
 	dict at: #height put: (pel attributeAt: #height) asInteger.
 	dict at: #width put: (pel attributeAt: #width) asInteger.
-	tags := (pel elementsAt: #tag) collect: [ :el | 
+	tags := (pel elementsAt: #tag) collect: [ :el |
 		        el innerXML asLowercase ].
 	dict at: #tags put: tags asSet.
+	(dict at: #type) asLowercase = #photo
+		ifTrue: [ self processXmlPhoto: pel into: dict ]
+		ifFalse: [
+			(dict at: #type) asLowercase = #regular
+				ifTrue: [ self processXmlRegular: pel into: dict ]
+				ifFalse: [
+					(dict at: #type) asLowercase = #answer
+						ifTrue: [ self processXmlAnswer: pel into: dict ]
+						ifFalse: [
+							(dict at: #type) asLowercase = #video
+								ifTrue: [ self processXmlVideo: pel into: dict ]
+								ifFalse: [ (dict at: #type) asLowercase = #quote
+								ifTrue: [ self processXmlQuote: pel into: dict ]
+								ifFalse: [ self halt ]  ] ] ] ].
 	^ dict
 ]
 
@@ -104,6 +118,30 @@ ZipExtraction >> processXML [
 		postElements do: [ :pel | 
 			p := self parsePost: pel.
 			posts at: (p at: #id) put: p ] ]. ^posts
+]
+
+{ #category : #initialization }
+ZipExtraction >> processXmlAnswer: pel into: dict [
+]
+
+{ #category : #initialization }
+ZipExtraction >> processXmlPhoto: pel into: dict [
+
+	"self halt."
+]
+
+{ #category : #initialization }
+ZipExtraction >> processXmlQuote: pel into: dict [
+]
+
+{ #category : #initialization }
+ZipExtraction >> processXmlRegular: pel into: dict [
+
+	"self halt."
+]
+
+{ #category : #initialization }
+ZipExtraction >> processXmlVideo: pel into: dict [
 ]
 
 { #category : #initialization }
