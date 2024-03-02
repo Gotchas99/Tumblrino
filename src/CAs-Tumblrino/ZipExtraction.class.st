@@ -111,11 +111,23 @@ ZipExtraction >> processAllFiles [
 { #category : #html }
 ZipExtraction >> processHTML [
 
+	|  f postID s tags |
+		f := (htmlFolder filesMatching: '*.html') first.
+	postID := f base.
+	s := Soup fromString: f contents trimmed.
+	tags := (s // 'span'
+		         select: [ :t | t @ #class = #tag ]
+		         thenCollect: [ :t | t string ]) asSet
+]
+
+{ #category : #html }
+ZipExtraction >> processHTMLmedia: aPostId [
+
 	| fld f postID s tags |
 	fld := TuLibrary default basePath / '_Export' / #html.
-	f := (fld filesMatching: '*.html') first.
+	f := (mediaFolder filesMatching: aPostId , '*') first.
 	postID := f base.
-	s := Soup fromString: f contents.
+	s := Soup fromString: f contents .
 	tags := (s // 'span'
 		         select: [ :t | t @ #class = #tag ]
 		         thenCollect: [ :t | t string ]) asSet
