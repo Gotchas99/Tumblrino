@@ -4,12 +4,13 @@ Class {
 	#instVars : [
 		'mediaFolder',
 		'xmlFolder',
-		'exportPath'
+		'exportPath',
+		'htmlFolder'
 	],
 	#category : #'CAs-Tumblrino-Zip'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #process }
 ZipExtraction >> getPostsFrom: aZipArchiveName [
 
 	| zip postMember postZip posts postsXml html |
@@ -28,9 +29,10 @@ ZipExtraction >> getPostsFrom: aZipArchiveName [
 { #category : #initialization }
 ZipExtraction >> initialize [
 
-	exportPath := TuLibrary default basePath  / '_Export'.
+	exportPath := TuLibrary default basePath / '_Export'.
 	mediaFolder := (exportPath / 'media') ensureCreateDirectory.
-	xmlFolder := (exportPath / 'xml') ensureCreateDirectory
+	xmlFolder := (exportPath / 'xml') ensureCreateDirectory.
+	htmlFolder := (exportPath / 'html') ensureCreateDirectory
 ]
 
 { #category : #initialization }
@@ -65,7 +67,7 @@ ZipExtraction >> misc [
 	postXml := (posts memberNamed: 'posts.xml') contents asString
 ]
 
-{ #category : #initialization }
+{ #category : #xml }
 ZipExtraction >> parsePost: pel [
 
 	| dict tags |
@@ -95,7 +97,7 @@ ZipExtraction >> parsePost: pel [
 	^ dict
 ]
 
-{ #category : #initialization }
+{ #category : #process }
 ZipExtraction >> processAllFiles [
 
 	| zips |
@@ -106,22 +108,20 @@ ZipExtraction >> processAllFiles [
 		self saveMediaFrom: z ] 
 ]
 
-{ #category : #initialization }
+{ #category : #html }
 ZipExtraction >> processHTML [
 
-	| doc top posts postElements p |
-	posts := Dictionary new.
-	(xmlFolder filesMatching: '*.xml') do: [ :f |
-		f readStreamDo: [ :str | doc := XMLDOMParser parse: str ].
-		top := doc root.
-		postElements := top descendantElementsNamed: 'post'.
-		postElements do: [ :pel |
-			p := self parsePost: pel.
-			posts at: (p at: #id) put: p ] ].
-	^ posts
+	| fld f postID s tags |
+	fld := TuLibrary default basePath / '_Export' / #html.
+	f := (fld filesMatching: '*.html') first.
+	postID := f base.
+	s := Soup fromString: f contents.
+	tags := (s // 'span'
+		         select: [ :t | t @ #class = #tag ]
+		         thenCollect: [ :t | t string ]) asSet
 ]
 
-{ #category : #initialization }
+{ #category : #xml }
 ZipExtraction >> processXML [
 
 	| doc top posts postElements p |
@@ -135,37 +135,37 @@ ZipExtraction >> processXML [
 			posts at: (p at: #id) put: p ] ]. ^posts
 ]
 
-{ #category : #initialization }
+{ #category : #xml }
 ZipExtraction >> processXmlAnswer: pel into: dict [
 ]
 
-{ #category : #initialization }
+{ #category : #xml }
 ZipExtraction >> processXmlPhoto: pel into: dict [
 
 	"self halt."
 ]
 
-{ #category : #initialization }
+{ #category : #xml }
 ZipExtraction >> processXmlQuote: pel into: dict [
 ]
 
-{ #category : #initialization }
+{ #category : #xml }
 ZipExtraction >> processXmlRegular: pel into: dict [
 
 	"self halt."
 ]
 
-{ #category : #initialization }
+{ #category : #xml }
 ZipExtraction >> processXmlVideo: pel into: dict [
 ]
 
-{ #category : #initialization }
+{ #category : #process }
 ZipExtraction >> saveHtml: aHtmlString [
 
 	aHtmlString extractInDirectory: exportPath overwrite: true
 ]
 
-{ #category : #initialization }
+{ #category : #process }
 ZipExtraction >> saveMediaFrom: aZipArchive [
 
 	| zip |
@@ -184,7 +184,7 @@ ZipExtraction >> saveMediaFrom: aZipArchive [
 						overwrite: false ] ] ]
 ]
 
-{ #category : #initialization }
+{ #category : #process }
 ZipExtraction >> saveXml: anXmlString forZip: aFileRef [
 
 	"doc := XMLDOMParser parse: postsXml.

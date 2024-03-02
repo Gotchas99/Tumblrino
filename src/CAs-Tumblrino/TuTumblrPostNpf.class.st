@@ -178,3 +178,9 @@ TuTumblrPostNpf >> tags [
 
 	^ tags
 ]
+
+{ #category : #accessing }
+TuTumblrPostNpf >> tags:aTaglist [
+
+ tags:=aTaglist 
+]

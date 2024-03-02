@@ -72,10 +72,10 @@ TuWeb >> start [
 			          (#defaultOutput -> #json).
 			          (#debugMode -> true) }.
 	teapot
-		after: '*' -> [ :req :resp |
+		after: '*' -> [ :req :resp | 
 				resp headers at: 'Access-Control-Allow-Origin' put: '*' ];
 		serveStatic: '/statics' from: TuLibrary default postPath;
-		GET: '/tags' -> TuLibrary default tags;
+		GET: '/tags' -> [ :req | TuLibrary default tags ];
 		GET: '/posts' -> [ :req |
 				TuLibrary default
 					postsHaving: (req at: #having)
@@ -84,7 +84,6 @@ TuWeb >> start [
 	"before:
 			'*' -> [ :req | self traceCr: 'Teapot: ' , req uri asString ];"
 	teapot start
-	
 ]
 
 { #category : #action }
