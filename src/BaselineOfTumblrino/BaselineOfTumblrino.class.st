@@ -65,9 +65,10 @@ BaselineOfTumblrino >> definePackages: spec [
 	"also depends on 'STON-Core' which is currently in the base image"
 
 	^ spec
-		  package: 'CAs-Tumblrino'
-		  with: [
-			  spec requires: #( 'XMLParser' 'NeoJSON' 'ZincHTTPComponents'  'SQLite3') ];
+		  package: 'CAs-Tumblrino' with: [
+			  spec requires:
+					  #( 'XMLParser' 'NeoJSON' 'ZincHTTPComponents'
+					     'SQLite3' 'Soup') ];
 		  package: #'CAs-Tumblrino-Gui'
 		  with: [ spec requires: #( 'CAs-Tumblrino' ) ];
 		  package: #'CAs-Tumblrino-Test'
