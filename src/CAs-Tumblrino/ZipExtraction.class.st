@@ -107,6 +107,21 @@ ZipExtraction >> processAllFiles [
 ]
 
 { #category : #initialization }
+ZipExtraction >> processHTML [
+
+	| doc top posts postElements p |
+	posts := Dictionary new.
+	(xmlFolder filesMatching: '*.xml') do: [ :f |
+		f readStreamDo: [ :str | doc := XMLDOMParser parse: str ].
+		top := doc root.
+		postElements := top descendantElementsNamed: 'post'.
+		postElements do: [ :pel |
+			p := self parsePost: pel.
+			posts at: (p at: #id) put: p ] ].
+	^ posts
+]
+
+{ #category : #initialization }
 ZipExtraction >> processXML [
 
 	| doc top posts postElements p |

@@ -5,7 +5,8 @@ Class {
 		'blogId',
 		'content',
 		'path',
-		'tags'
+		'tags',
+		'hidden'
 	],
 	#category : #'CAs-Tumblrino-Core'
 }
@@ -28,7 +29,7 @@ TuTumblrPostNpf >> content [
 	^ content
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TuTumblrPostNpf >> dbData [
 
 	| dict tagString |
@@ -83,6 +84,12 @@ TuTumblrPostNpf >> initialize [
 
 	super initialize.
 	content := OrderedCollection  new
+]
+
+{ #category : #testing }
+TuTumblrPostNpf >> isHidden [ 
+
+	^ hidden ifNil:[false]
 ]
 
 { #category : #testing }

@@ -72,8 +72,6 @@ TuWeb >> start [
 			          (#defaultOutput -> #json).
 			          (#debugMode -> true) }.
 	teapot
-		before:
-			'*' -> [ :req | self traceCr: 'Teapot: ' , req uri asString ];
 		after: '*' -> [ :req :resp |
 				resp headers at: 'Access-Control-Allow-Origin' put: '*' ];
 		serveStatic: '/statics' from: TuLibrary default postPath;
@@ -83,12 +81,10 @@ TuWeb >> start [
 					postsHaving: (req at: #having)
 					butNot: (req at: #not) ];
 		GET: '/post' -> [ :req | TuLibrary default postDict: (req at: #id) ].
+	"before:
+			'*' -> [ :req | self traceCr: 'Teapot: ' , req uri asString ];"
 	teapot start
-	"(ZnServer startDefaultOn: 1701) delegate:
-		(ZnStaticFileServerDelegate new
-			 directory: TuLibrary default basePath / '_posts';
-			 prefixFromString: 'static-files';
-			 yourself)"
+	
 ]
 
 { #category : #action }

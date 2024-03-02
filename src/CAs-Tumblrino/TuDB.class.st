@@ -98,15 +98,22 @@ TuDB >> dropPosts [
 ]
 
 { #category : #schema }
-TuDB >> ensureColumn: colName type: colType inTable: tblName [
+TuDB >> ensureColumn: colName type: colType default: defValue inTable: tblName [
 
 	(self colExists: colName inTable: tblName) ifTrue: [ ^ self ].
-	db execute: 'ALTER TABLE ',
-	tblName,
-	' ADD COLUMN ',
-	colName,
-	' ',
-	colType
+	db execute:
+		'ALTER TABLE ' , tblName , ' ADD COLUMN ' , colName , ' ' , colType
+		, ' DEFAULT (' , defValue,')'
+]
+
+{ #category : #schema }
+TuDB >> ensureColumn: colName type: colType inTable: tblName [
+
+	self
+		ensureColumn: colName
+		type: colType
+		default: 'NULL' 
+		inTable: tblName
 ]
 
 { #category : #initialization }
@@ -135,16 +142,16 @@ TuDB >> open [
 	db ifNotNil: [ db connection isOpen ifTrue: [ ^ self ] ].
 	db := SQLite3Database openOn: self dbFilename pathString.
 	conn := db connection.
-		writeProcess := [
+	writeProcess := [
 	                [
 	                | msg |
 	                msg := writeQ next.
 	                self traceCr: 'get, writeQ: ' , writeQ size asString.
-	                msg sendTo: self ] repeat.
+	                msg sendTo: self .Processor yield.] repeat.
 	                self traceCr: 'writeProcess died' ]
 		                forkAt: 33
-		                named: #dbWriter
-.	self traceCr: 'db opened'
+		                named: #dbWriter.
+	self traceCr: 'db opened'
 ]
 
 { #category : #testing }
@@ -160,7 +167,7 @@ TuDB >> postExists: aPostId [
 TuDB >> queueWrite: aMsg [
 
 	writeQ nextPut: aMsg.
-	self traceCr: 'add, writeQ: ' , writeQ size asString
+	self traceCr: 'add, writeQ: ' , writeQ size asString.Processor yield.
 ]
 
 { #category : #schema }
@@ -180,7 +187,7 @@ TuDB >> setupPosts [
 
 	self createPosts.
 	self ensureColumn: #tags type: #TEXT inTable: #posts.
-	
+	self ensureColumn: #hidden type: #INTEGER default: 'FALSE' inTable: #posts
 ]
 
 { #category : #schema }

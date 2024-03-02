@@ -28,19 +28,20 @@ TuLibrary >> fetchLikes [
 	api := TuTumblrClient default.
 	likes := api likes.
 	likes do: [ :l |
-(		posts anySatisfy:  [ :p | p id = l id ])ifFalse:[
-		l
-			load;
-			saveToFile ]]
+		(posts anySatisfy: [ :p | p id = l id ]) ifFalse: [
+			l
+				load;
+				saveToFile;saveToDb .
+			posts add: l ] ]
 ]
 
 { #category : #accessing }
 TuLibrary >> post: anID [
 
-	| post  |
-	self traceCr: 'Retrieving post: ' , anID asString.
+	| post |
+	"self traceCr: 'Retrieving post: ' , anID asString."
 	post := posts detect: [ :p | p id = anID asString ].
-		^ post
+	^ post
 ]
 
 { #category : #accessing }
