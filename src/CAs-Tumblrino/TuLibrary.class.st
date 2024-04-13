@@ -15,6 +15,16 @@ TuLibrary class >> default [
 ^Default ifNil:[Default := self new]
 ]
 
+{ #category : #action }
+TuLibrary >> addPost: aPost [
+
+	posts add: aPost.
+	aPost
+		saveToFile;
+		saveToDb.
+	
+]
+
 { #category : #accessing }
 TuLibrary >> basePath [
 
@@ -40,7 +50,7 @@ TuLibrary >> post: anID [
 
 	| post |
 	"self traceCr: 'Retrieving post: ' , anID asString."
-	post := posts detect: [ :p | p id = anID asString ].
+	post := posts detect: [ :p | p id = anID asString ]ifNone: [TuTumblrPostNpf new id:anID  ].
 	^ post
 ]
 
@@ -49,7 +59,7 @@ TuLibrary >> postDict: anID [
 
 	| post dict |
 	self traceCr: 'Retrieving post: ' , anID asString.
-	post := posts detect: [ :p | p id = anID asString ].
+	post := self post: anID.
 	dict := Dictionary new.
 	dict
 		at: #id put: post id asString;

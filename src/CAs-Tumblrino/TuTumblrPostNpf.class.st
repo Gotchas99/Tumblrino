@@ -56,14 +56,8 @@ TuTumblrPostNpf >> hasTag: aTag [
 { #category : #accessing }
 TuTumblrPostNpf >> id: anId [
 
-	self
-		deprecated: 'Use #setId instead'
-		on: '24 February 2024'
-		in:
-		'Pharo-11.0.0+build.720.sha.dc4ec9ea9b9b8d3802b5fa1e3666815b9208b589 (64 Bit)'.
-
-	super id: anId.
-	path := TuLibrary default postPath / anId
+super id: anId.
+	path := TuLibrary default postPath / self id
 ]
 
 { #category : #accessing }
@@ -83,7 +77,8 @@ TuTumblrPostNpf >> imgPaths [
 TuTumblrPostNpf >> initialize [
 
 	super initialize.
-	content := OrderedCollection  new
+	content := OrderedCollection new.
+	tags := OrderedCollection new 
 ]
 
 { #category : #testing }
@@ -135,6 +130,13 @@ TuTumblrPostNpf >> path [ ^path
 ]
 
 { #category : #action }
+TuTumblrPostNpf >> save [
+
+	TuLibrary default addPost: self.
+	self saveToDb ;saveToFile 
+]
+
+{ #category : #action }
 TuTumblrPostNpf >> saveToDb [
 	"	TuDB default writePost: self"
 
@@ -158,13 +160,6 @@ TuTumblrPostNpf >> saveToFile [
 	content do: [ :cont |
 		cont owner: self.
 		cont saveToFile ]
-]
-
-{ #category : #accessing }
-TuTumblrPostNpf >> setId [
-
-	super setId.
-	path := TuLibrary default postPath / id asString
 ]
 
 { #category : #accessing }

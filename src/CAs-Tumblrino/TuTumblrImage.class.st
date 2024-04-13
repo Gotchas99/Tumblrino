@@ -107,9 +107,9 @@ TuTumblrImage >> saveToFile [
 { #category : #initialization }
 TuTumblrImage >> setId [
 
-| url |
-url := (json at: #media) first at: #url.
-	id:= url asUrl firstPathSegment .
+	| url |
+	url := (json at: #media) first at: #url.
+	self id: url asUrl firstPathSegment
 ]
 
 { #category : #gui }

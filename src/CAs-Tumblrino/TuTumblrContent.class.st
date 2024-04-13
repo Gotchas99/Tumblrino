@@ -43,7 +43,7 @@ TuTumblrContent >> saveToFile [
 { #category : #accessing }
 TuTumblrContent >> setId [
 
-	id := UUIDGenerator next asString
+	self id: UUIDGenerator next asString
 ]
 
 { #category : #accessing }
