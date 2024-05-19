@@ -1,6 +1,6 @@
 Class {
-	#name : #TuTumblrPostNpf,
-	#superclass : #TuTumblrObject,
+	#name : 'TuTumblrPostNpf',
+	#superclass : 'TuTumblrObject',
 	#instVars : [
 		'blogId',
 		'content',
@@ -8,28 +8,30 @@ Class {
 		'tags',
 		'hidden'
 	],
-	#category : #'CAs-Tumblrino-Core'
+	#category : 'CAs-Tumblrino-Core',
+	#package : 'CAs-Tumblrino',
+	#tag : 'Core'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrPostNpf >> blogId [
 
 	^ blogId ifEmpty: [ blogId:=json at: #blog at: #uuid].
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrPostNpf >> blogId:anId [
 
 	blogId:=anId 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrPostNpf >> content [
 
 	^ content
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrPostNpf >> dbData [
 
 	| dict tagString |
@@ -41,26 +43,26 @@ TuTumblrPostNpf >> dbData [
 	^ dict
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 TuTumblrPostNpf >> hasNoTag [
 
 	^ tags isEmpty
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 TuTumblrPostNpf >> hasTag: aTag [
  
 	^ tags includes: aTag
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrPostNpf >> id: anId [
 
 super id: anId.
 	path := TuLibrary default postPath / self id
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrPostNpf >> imgPaths [
 
 	| tmp |
@@ -73,7 +75,7 @@ TuTumblrPostNpf >> imgPaths [
 	^ tmp
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 TuTumblrPostNpf >> initialize [
 
 	super initialize.
@@ -81,19 +83,19 @@ TuTumblrPostNpf >> initialize [
 	tags := OrderedCollection new 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 TuTumblrPostNpf >> isHidden [ 
 
 	^ hidden ifNil:[false]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 TuTumblrPostNpf >> isLoaded [
 
 	^ self content isNotEmpty
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 TuTumblrPostNpf >> load [
 
 	"json := TuTumblrClient default
@@ -106,7 +108,7 @@ TuTumblrPostNpf >> load [
 	self parseJson
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 TuTumblrPostNpf >> parseJson [
 
 	| trail tmp |
@@ -125,18 +127,18 @@ TuTumblrPostNpf >> parseJson [
 	tags := tmp collect: [ :t | t asLowercase ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrPostNpf >> path [ ^path
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 TuTumblrPostNpf >> save [
 
 	TuLibrary default addPost: self.
 	self saveToDb ;saveToFile 
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 TuTumblrPostNpf >> saveToDb [
 	"	TuDB default writePost: self"
 
@@ -145,7 +147,7 @@ TuTumblrPostNpf >> saveToDb [
 	TuDB default queueWrite: msg.
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 TuTumblrPostNpf >> saveToFile [
 
 	| fref tmp |
@@ -162,19 +164,19 @@ TuTumblrPostNpf >> saveToFile [
 		cont saveToFile ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrPostNpf >> summary [
 
 	^ json at: #summary
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrPostNpf >> tags [
 
 	^ tags
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrPostNpf >> tags:aTaglist [
 
  tags:=aTaglist 

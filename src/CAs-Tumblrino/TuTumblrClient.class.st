@@ -1,6 +1,6 @@
 Class {
-	#name : #TuTumblrClient,
-	#superclass : #Object,
+	#name : 'TuTumblrClient',
+	#superclass : 'Object',
 	#instVars : [
 		'oauth1Service',
 		'consData'
@@ -8,15 +8,17 @@ Class {
 	#classVars : [
 		'Default'
 	],
-	#category : #'CAs-Tumblrino-API'
+	#category : 'CAs-Tumblrino-API',
+	#package : 'CAs-Tumblrino',
+	#tag : 'API'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrClient class >> default [
 	^ Default ifNil: [ Default := self new ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrClient class >> keyString [
 
 	"gå till 
@@ -33,7 +35,7 @@ Token Secret XXXXXX
 	'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrClient class >> keys [
 
 	| lines keys parts val key str |
@@ -49,7 +51,7 @@ TuTumblrClient class >> keys [
 	^ keys
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrClient class >> readKeys [
 
 
@@ -59,12 +61,12 @@ TuTumblrClient class >> readKeys [
 	^ str
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrClient class >> reset [
 	Default := nil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrClient class >> xAuth [
 	"application name: Tmblrino"
 
@@ -93,7 +95,7 @@ Newly registered consumers are rate limited to 1,000 requests per hour, and 5,00
 	
 ]
 
-{ #category : #OAuth1 }
+{ #category : 'OAuth1' }
 TuTumblrClient >> accToken [
 	"self halt."
 
@@ -104,24 +106,24 @@ TuTumblrClient >> accToken [
 Token Secret XXXXXXXX"
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrClient >> api [
 
 	^ ZnUrl fromString: 'https://api.tumblr.com'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrClient >> apiKey [
 	^ self consumerKey
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrClient >> apiV2 [
 
 	^ self api/'v2'
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 TuTumblrClient >> blogInfo: aBlogID [
 
 	| url json blog |
@@ -132,14 +134,14 @@ TuTumblrClient >> blogInfo: aBlogID [
 	^ blog
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 TuTumblrClient >> blogInfoSample [
 
 
 	^ self blogInfo: 'henk-heijmans'
 ]
 
-{ #category : #OAuth1 }
+{ #category : 'OAuth1' }
 TuTumblrClient >> consumerData [
 
 	^ consData ifNil: [ 
@@ -154,19 +156,19 @@ TuTumblrClient >> consumerData [
 			              consumerSecret: self consumerSecret  ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrClient >> consumerKey [
 
 	^ self class keys at: 'Consumer Key'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrClient >> consumerSecret [
 
 	^ self class keys at: 'Consumer Secret'
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 TuTumblrClient >> getPost: postID from: blogID [
 
 	| url json |
@@ -175,14 +177,14 @@ TuTumblrClient >> getPost: postID from: blogID [
 	^ json
 ]
 
-{ #category : #OAuth1 }
+{ #category : 'OAuth1' }
 TuTumblrClient >> getTokenFromCallbackUrl: aUrl [
 	| ver |
 	ver := aUrl asUrl query at: 'oauth_verifier'.
 	^ ver
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 TuTumblrClient >> getUrl: aUrl [
 	| response json |
 	response := (self service httpGet: aUrl using: self accToken)
@@ -193,7 +195,7 @@ TuTumblrClient >> getUrl: aUrl [
 	^ json at: #response
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 TuTumblrClient >> likes [
 
 	| likeNo url json liked all likedPost |
@@ -218,7 +220,7 @@ TuTumblrClient >> likes [
 	^ all
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 TuTumblrClient >> postUrl: aUrl [
 	| response json |
 	response := (self service
@@ -231,7 +233,7 @@ TuTumblrClient >> postUrl: aUrl [
 	^ json at: #response
 ]
 
-{ #category : #OAuth1 }
+{ #category : 'OAuth1' }
 TuTumblrClient >> service [
 	^ oauth1Service
 		ifNil: [ oauth1Service := ZnOAuth1Service new
@@ -239,7 +241,7 @@ TuTumblrClient >> service [
 				yourself ]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 TuTumblrClient >> unlike: aPost [
 
 	| url |
@@ -249,7 +251,7 @@ TuTumblrClient >> unlike: aPost [
 	^ self
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 TuTumblrClient >> userInfo [
 
 	| url json user |

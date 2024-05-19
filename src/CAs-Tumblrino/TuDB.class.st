@@ -1,6 +1,6 @@
 Class {
-	#name : #TuDB,
-	#superclass : #Object,
+	#name : 'TuDB',
+	#superclass : 'Object',
 	#instVars : [
 		'db',
 		'conn',
@@ -10,41 +10,43 @@ Class {
 	#classVars : [
 		'Default'
 	],
-	#category : #'CAs-Tumblrino-Core'
+	#category : 'CAs-Tumblrino-Core',
+	#package : 'CAs-Tumblrino',
+	#tag : 'Core'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuDB class >> default [
 ^Default ifNil:[Default:= self new].
 ]
 
-{ #category : #'class initialization' }
+{ #category : 'class initialization' }
 TuDB class >> initialize [
 
 	SessionManager default registerUserClassNamed: self name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuDB class >> reset [
 Default ifNotNil:[self default close.
 	Default := nil]
 ]
 
-{ #category : #'class initialization' }
+{ #category : 'class initialization' }
 TuDB class >> shutDown: quitting [
 	"Our system shutDown hook: stop all servers we manage"
 
  self default close 
 ]
 
-{ #category : #'class initialization' }
+{ #category : 'class initialization' }
 TuDB class >> startUp: resuming [
 	"Our system startUp hook"
 self default ensureLibrary .
 	self default open
 ]
 
-{ #category : #'connection handling' }
+{ #category : 'connection handling' }
 TuDB >> close [
 
 	db ifNotNil: [
@@ -55,7 +57,7 @@ TuDB >> close [
 		db := nil ]
 ]
 
-{ #category : #schema }
+{ #category : 'schema' }
 TuDB >> colExists: colName inTable: tableName [
 
 	| tbl |
@@ -63,11 +65,11 @@ TuDB >> colExists: colName inTable: tableName [
 	^tbl columnNames includes: colName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuDB >> conn [ ^conn
 ]
 
-{ #category : #schema }
+{ #category : 'schema' }
 TuDB >> createPosts [
 
 	(self tableExists: #posts) ifTrue: [ ^ self ].
@@ -78,26 +80,26 @@ TuDB >> createPosts [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuDB >> db [
 
 	^ db
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuDB >> dbFilename [
 
 	^ TuLibrary default basePath / 'TuDatabase.db'
 ]
 
-{ #category : #schema }
+{ #category : 'schema' }
 TuDB >> dropPosts [
 
 	(self tableExists: #posts) ifFalse: [ ^ self ].
 	conn execute: 'DROP TABLE posts'
 ]
 
-{ #category : #schema }
+{ #category : 'schema' }
 TuDB >> ensureColumn: colName type: colType default: defValue inTable: tblName [
 
 	(self colExists: colName inTable: tblName) ifTrue: [ ^ self ].
@@ -106,7 +108,7 @@ TuDB >> ensureColumn: colName type: colType default: defValue inTable: tblName [
 		, ' DEFAULT (' , defValue,')'
 ]
 
-{ #category : #schema }
+{ #category : 'schema' }
 TuDB >> ensureColumn: colName type: colType inTable: tblName [
 
 	self
@@ -116,7 +118,7 @@ TuDB >> ensureColumn: colName type: colType inTable: tblName [
 		inTable: tblName
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 TuDB >> ensureLibrary [
 
 	| fromName toName dll |
@@ -129,14 +131,14 @@ TuDB >> ensureLibrary [
 	fromName copyTo: toName
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 TuDB >> initialize [
 
 	writeQ := AtomicSharedQueue new.
 
 ]
 
-{ #category : #'connection handling' }
+{ #category : 'connection handling' }
 TuDB >> open [
 
 	db ifNotNil: [ db connection isOpen ifTrue: [ ^ self ] ].
@@ -154,7 +156,7 @@ TuDB >> open [
 	self traceCr: 'db opened'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 TuDB >> postExists: aPostId [
 
 	| sql tmp |
@@ -163,26 +165,26 @@ TuDB >> postExists: aPostId [
 	^ tmp
 ]
 
-{ #category : #operations }
+{ #category : 'operations' }
 TuDB >> queueWrite: aMsg [
 
 	writeQ nextPut: aMsg.
 	self traceCr: 'add, writeQ: ' , writeQ size asString.Processor yield.
 ]
 
-{ #category : #schema }
+{ #category : 'schema' }
 TuDB >> setupContent [
 
 	
 ]
 
-{ #category : #schema }
+{ #category : 'schema' }
 TuDB >> setupMedia [
 
 	
 ]
 
-{ #category : #schema }
+{ #category : 'schema' }
 TuDB >> setupPosts [
 
 	self createPosts.
@@ -190,7 +192,7 @@ TuDB >> setupPosts [
 	self ensureColumn: #hidden type: #INTEGER default: 'FALSE' inTable: #posts
 ]
 
-{ #category : #schema }
+{ #category : 'schema' }
 TuDB >> setupSchema [
 
 	self setupPosts.
@@ -198,13 +200,13 @@ TuDB >> setupSchema [
 	self setupMedia 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 TuDB >> tableExists: tableName [
 
 	^ db tables anySatisfy: [ :t | t name = tableName ] 
 ]
 
-{ #category : #operations }
+{ #category : 'operations' }
 TuDB >> writePost: aPostData [
 
 	| sql |

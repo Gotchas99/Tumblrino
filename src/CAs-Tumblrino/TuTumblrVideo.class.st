@@ -1,21 +1,23 @@
 Class {
-	#name : #TuTumblrVideo,
-	#superclass : #TuTumblrContent,
+	#name : 'TuTumblrVideo',
+	#superclass : 'TuTumblrContent',
 	#instVars : [
 		'media',
 		'poster',
 		'filmstrip'
 	],
-	#category : #'CAs-Tumblrino-Core'
+	#category : 'CAs-Tumblrino-Core',
+	#package : 'CAs-Tumblrino',
+	#tag : 'Core'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrVideo >> media [
 
 	^ media
 ]
 
-{ #category : #parsing }
+{ #category : 'parsing' }
 TuTumblrVideo >> parseJson [
 
 	super parseJson.
@@ -27,7 +29,7 @@ TuTumblrVideo >> parseJson [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrVideo >> saveToFile [
 
 	super saveToFile.

@@ -1,6 +1,6 @@
 Class {
-	#name : #TuWeb,
-	#superclass : #Object,
+	#name : 'TuWeb',
+	#superclass : 'Object',
 	#instVars : [
 		'teapot'
 	],
@@ -8,16 +8,18 @@ Class {
 		'AlwaysRestart',
 		'Default'
 	],
-	#category : #'CAs-Tumblrino-Web'
+	#category : 'CAs-Tumblrino-Web',
+	#package : 'CAs-Tumblrino',
+	#tag : 'Web'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuWeb class >> default [
 
 	^Default ifNil:[Default := self new]
 ]
 
-{ #category : #'class initialization' }
+{ #category : 'class initialization' }
 TuWeb class >> initialize [
 
 	AlwaysRestart := true.
@@ -25,14 +27,14 @@ SessionManager default
 		registerUserClassNamed: self name
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 TuWeb class >> restartDefault [
 <script>
 	self stopDefault.
 	^ self startDefault
 ]
 
-{ #category : #'system startup' }
+{ #category : 'system startup' }
 TuWeb class >> shutDown: quitting [
 	"Our system shutDown hook: stop all servers we manage"
 
@@ -40,13 +42,13 @@ TuWeb class >> shutDown: quitting [
 self		stopDefault]
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 TuWeb class >> startDefault [
 
 	^self default start
 ]
 
-{ #category : #'system startup' }
+{ #category : 'system startup' }
 TuWeb class >> startUp: resuming [
 	"Our system startUp hook: start all servers we manage.
 	We do this using deferred startup actions to allow normal error handling."
@@ -56,7 +58,7 @@ TuWeb class >> startUp: resuming [
 			addDeferredStartupAction: [ self startDefault ] ]
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 TuWeb class >> stopDefault [
 
 	Default ifNotNil: [
@@ -65,7 +67,7 @@ TuWeb class >> stopDefault [
 
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 TuWeb >> start [
 
 	teapot := Teapot configure: {
@@ -86,7 +88,7 @@ TuWeb >> start [
 	teapot start
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 TuWeb >> stop [
 
 	teapot ifNotNil:[teapot stop]

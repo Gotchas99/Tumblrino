@@ -1,55 +1,57 @@
 Class {
-	#name : #TuTumblrObject,
-	#superclass : #Object,
+	#name : 'TuTumblrObject',
+	#superclass : 'Object',
 	#instVars : [
 		'json',
 		'id'
 	],
-	#category : #'CAs-Tumblrino-Core'
+	#category : 'CAs-Tumblrino-Core',
+	#package : 'CAs-Tumblrino',
+	#tag : 'Core'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 TuTumblrObject class >> from: aJson [
 	^ self new setJson: aJson
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrObject >> id [
 
 	^ id asString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrObject >> id: anId [
 
 	id := anId asString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrObject >> idTag [
 
 	^ #id
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 TuTumblrObject >> initialize [
 
 	json := Dictionary new 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 TuTumblrObject >> parseJson [
 
 	self setId 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 TuTumblrObject >> setId [
 
 	self id: (json at: self idTag) asString
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 TuTumblrObject >> setJson: aJson [
 	json := aJson.
 	self parseJson

@@ -1,6 +1,6 @@
-Extension { #name : #SoupDecoder }
+Extension { #name : 'SoupDecoder' }
 
-{ #category : #'*CAs-Tumblrino' }
+{ #category : '*CAs-Tumblrino' }
 SoupDecoder >> decodeFrom: encodingName [
 
 	| converter |
@@ -15,7 +15,7 @@ SoupDecoder >> decodeFrom: encodingName [
 		  do: [ :e | nil ]
 ]
 
-{ #category : #'*CAs-Tumblrino' }
+{ #category : '*CAs-Tumblrino' }
 SoupDecoder >> detectEncoding [
 
 	xmlData := string.
@@ -27,7 +27,7 @@ SoupDecoder >> detectEncoding [
 		do: [ :e |  ]
 ]
 
-{ #category : #'*CAs-Tumblrino' }
+{ #category : '*CAs-Tumblrino' }
 SoupDecoder >> sniffEncoding [
 
 	| xmlEncodingMatcher |
@@ -42,7 +42,7 @@ SoupDecoder >> sniffEncoding [
 			xmlEncoding := sniffedXmlEncoding ] ]
 ]
 
-{ #category : #'*CAs-Tumblrino' }
+{ #category : '*CAs-Tumblrino' }
 SoupDecoder >> sniffEncodingMeta [
 
 	| charsetMatcher equivMatcher |
