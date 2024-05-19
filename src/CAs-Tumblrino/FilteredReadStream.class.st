@@ -1,5 +1,5 @@
 Class {
 	#name : #FilteredReadStream,
 	#superclass : #DecoratorStream,
-	#category : #'CAs-Tumblrino'
+	#category : 'CAs-Tumblrino-Util'
 }
