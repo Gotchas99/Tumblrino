@@ -10,6 +10,15 @@ Class {
 	#category : #'CAs-Tumblrino-Zip'
 }
 
+{ #category : #html }
+ZipExtraction >> createContentFor: aFref [
+
+	| cont |
+	self halt.
+	cont:= TuTumblrContent forFile: aFref ..
+	^cont.
+]
+
 { #category : #process }
 ZipExtraction >> getPostsFrom: aZipArchiveName [
 
@@ -121,9 +130,8 @@ ZipExtraction >> processHTML [
 { #category : #html }
 ZipExtraction >> processHTMLmediaId: aPostId html: aString [
 
-	| fld f s tags post |
+	| fld mediaFiles s tags post cont |
 	fld := TuLibrary default basePath / '_Export' / #html.
-	f := (mediaFolder filesMatching: aPostId , '*') first.
 	"-------------------"
 	s := Soup fromString: aString.
 	tags := (s // 'span'
@@ -132,7 +140,9 @@ ZipExtraction >> processHTMLmediaId: aPostId html: aString [
 	post := TuLibrary default post: aPostId.
 	post tags ifEmpty: [ post tags: tags ].
 	post path ensureCreateDirectory.
-	self halt "post save"
+"post save"
+	mediaFiles := mediaFolder filesMatching: aPostId , '*'.
+	mediaFiles do: [ :mf | cont:= self  createContentFor: mf.cont owner:post].self halt.
 ]
 
 { #category : #xml }

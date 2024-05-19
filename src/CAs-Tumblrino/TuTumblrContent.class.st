@@ -8,6 +8,18 @@ Class {
 	#category : #'CAs-Tumblrino-Core'
 }
 
+{ #category : #'as yet unclassified' }
+TuTumblrContent class >> forFile: aFileRef [
+
+	| ext |
+	ext := aFileRef extension asLowercase.
+	(#( #jpg #jpeg #png #gif ) includes: ext) ifTrue: [
+		^ TuTumblrImage new forFile: aFileRef ].
+	(#( #mp4 ) includes: ext) ifTrue: [
+		^ TuTumblrVideo new forFile: aFileRef ].
+	Error signal: 'unknown file extension'
+]
+
 { #category : #'instance creation' }
 TuTumblrContent class >> from: aJson [
 
@@ -37,7 +49,7 @@ super parseJson .type:= json at:#type
 { #category : #accessing }
 TuTumblrContent >> saveToFile [
 
-
+	
 ]
 
 { #category : #accessing }

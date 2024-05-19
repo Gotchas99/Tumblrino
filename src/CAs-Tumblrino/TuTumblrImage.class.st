@@ -1,8 +1,7 @@
 Class {
 	#name : #TuTumblrImage,
-	#superclass : #TuTumblrContent,
+	#superclass : #TuTumblrFilebased,
 	#instVars : [
-		'media',
 		'form',
 		'forms',
 		'stream'
@@ -20,6 +19,16 @@ TuTumblrImage >> filename [
 	| tmp |
 	tmp := self url asUrl path.
 	^ tmp copyWithout: $/
+]
+
+{ #category : #initialization }
+TuTumblrImage >> forFile: aFileRef [
+
+	| ext |
+	self halt.
+	super forFile: aFileRef
+
+
 ]
 
 { #category : #gui }

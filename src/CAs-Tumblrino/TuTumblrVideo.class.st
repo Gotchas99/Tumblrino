@@ -1,13 +1,19 @@
 Class {
 	#name : #TuTumblrVideo,
-	#superclass : #TuTumblrContent,
+	#superclass : #TuTumblrFilebased,
 	#instVars : [
-		'media',
 		'poster',
 		'filmstrip'
 	],
 	#category : #'CAs-Tumblrino-Core'
 }
+
+{ #category : #'as yet unclassified' }
+TuTumblrVideo >> forFile: aFileRef [
+
+	| ext |
+	self halt.	super forFile: aFileRef
+]
 
 { #category : #accessing }
 TuTumblrVideo >> media [
@@ -21,10 +27,12 @@ TuTumblrVideo >> parseJson [
 	super parseJson.
 	media := TuTumblrMedia from: (json at: #media).
 	poster := TuTumblrMedia from: (json at: #poster) first.
-	json
-		at: #filmstrip
-		ifPresent: [ :strip | filmstrip := TuTumblrMedia from: strip ].
-
+	{
+		media.
+		poster } do: [ :each | each owner: self ].
+	json at: #filmstrip ifPresent: [ :strip |
+		filmstrip := TuTumblrMedia from: strip.
+		filmstrip owner: self ]
 ]
 
 { #category : #accessing }
