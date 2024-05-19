@@ -111,31 +111,28 @@ ZipExtraction >> processAllFiles [
 { #category : #html }
 ZipExtraction >> processHTML [
 
-	| frefs postID s tags post |
+	| frefs postID |
 	frefs := htmlFolder filesMatching: '*.html'.
 	frefs do: [ :f |
 		postID := f base.
-		s := Soup fromString: f contents trimmed.
-		tags := (s // 'span'
-			         select: [ :t | t @ #class = #tag ]
-			         thenCollect: [ :t | t string ]) asSet.
-		post := TuLibrary default post: postID.
-		post tags: tags.
-		post path ensureCreateDirectory.
-self halt.		"post save" ]
+		self processHTMLmediaId: postID html: f contents trimmed]
 ]
 
 { #category : #html }
-ZipExtraction >> processHTMLmedia: aPostId [
+ZipExtraction >> processHTMLmediaId: aPostId html: aString [
 
-	| fld f postID s tags |
+	| fld f s tags post |
 	fld := TuLibrary default basePath / '_Export' / #html.
 	f := (mediaFolder filesMatching: aPostId , '*') first.
-	postID := f base.
-	s := Soup fromString: f contents .
+	"-------------------"
+	s := Soup fromString: aString.
 	tags := (s // 'span'
 		         select: [ :t | t @ #class = #tag ]
-		         thenCollect: [ :t | t string ]) asSet
+		         thenCollect: [ :t | t string ]) asSet.
+	post := TuLibrary default post: aPostId.
+	post tags ifEmpty: [ post tags: tags ].
+	post path ensureCreateDirectory.
+	self halt "post save"
 ]
 
 { #category : #xml }
