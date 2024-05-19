@@ -53,21 +53,20 @@ TuTumblrMedia >> parseJson [
 { #category : #accessing }
 TuTumblrMedia >> path [
 
-	| url fref |
-	^ path ifNil:[	url := self url asUrl.
-	fref := (owner path / url lastPathSegment) asFileReference.
-	path := fref.
-]
+	|  fref |
+	^ path ifNil: [
+		  fref := (owner path / self url lastPathSegment) asFileReference.
+		  path := fref ]
 ]
 
 { #category : #action }
 TuTumblrMedia >> saveToFile [
 
-	|  fref |
+	| fref |
 	fref := (owner path / url asUrl lastPathSegment) asFileReference.
 	path := fref.
 	fref exists ifTrue: [ ^ self ].
-	self crTrace: 'Saving: ' , fref fullName.
+	self traceCr:  'Saving: ' , fref fullName.
 	url saveContentsToFile: fref
 ]
 
@@ -79,5 +78,5 @@ TuTumblrMedia >> size [
 { #category : #accessing }
 TuTumblrMedia >> url [
 
-	^ url ifNil:[url:=url := json at: #url.]
+	^ url ifNil: [ url :=( json at: #url)asUrl  ]
 ]

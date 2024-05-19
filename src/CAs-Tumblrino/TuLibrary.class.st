@@ -18,11 +18,11 @@ TuLibrary class >> default [
 { #category : #action }
 TuLibrary >> addPost: aPost [
 
+	(posts anySatisfy: [ :p | p id = aPost id ]) ifTrue: [ ^ self ].
 	posts add: aPost.
 	aPost
 		saveToFile;
-		saveToDb.
-	
+		saveToDb
 ]
 
 { #category : #accessing }
@@ -40,9 +40,8 @@ TuLibrary >> fetchLikes [
 	likes do: [ :l |
 		(posts anySatisfy: [ :p | p id = l id ]) ifFalse: [
 			l
-				load;
-				saveToFile;saveToDb .
-			posts add: l ] ]
+				load
+.self addPost:  l ] ]
 ]
 
 { #category : #accessing }

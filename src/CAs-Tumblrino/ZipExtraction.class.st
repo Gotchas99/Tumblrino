@@ -111,13 +111,18 @@ ZipExtraction >> processAllFiles [
 { #category : #html }
 ZipExtraction >> processHTML [
 
-	|  f postID s tags |
-		f := (htmlFolder filesMatching: '*.html') first.
-	postID := f base.
-	s := Soup fromString: f contents trimmed.
-	tags := (s // 'span'
-		         select: [ :t | t @ #class = #tag ]
-		         thenCollect: [ :t | t string ]) asSet
+	| frefs postID s tags post |
+	frefs := htmlFolder filesMatching: '*.html'.
+	frefs do: [ :f |
+		postID := f base.
+		s := Soup fromString: f contents trimmed.
+		tags := (s // 'span'
+			         select: [ :t | t @ #class = #tag ]
+			         thenCollect: [ :t | t string ]) asSet.
+		post := TuLibrary default post: postID.
+		post tags: tags.
+		post path ensureCreateDirectory.
+self halt.		"post save" ]
 ]
 
 { #category : #html }
