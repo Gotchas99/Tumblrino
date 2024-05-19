@@ -89,5 +89,5 @@ TuWeb >> start [
 { #category : #action }
 TuWeb >> stop [
 
-	teapot stop
+	teapot ifNotNil:[teapot stop]
 ]
