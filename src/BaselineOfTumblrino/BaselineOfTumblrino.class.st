@@ -26,12 +26,12 @@ BaselineOfTumblrino >> defineDependencies: spec [
 
 	^ spec
 		  baseline: 'XMLParser'
-		  with: [
-			  spec repository: 'github://pharo-contributions/XML-XMLParser/src' ];
+		  "with: [
+			  spec repository: 'github://pharo-contributions/XML-XMLParser/src' ]";
 		  baseline: 'Soup'
 		  with: [ spec repository: 'github://pharo-contributions/Soup/' ];
 		  baseline: 'NeoJSON'
-		  with: [ spec repository: 'github://svenvc/NeoJSON/repository' ];
+		  "with: [ spec repository: 'github://svenvc/NeoJSON/repository' ]";
 		  baseline: 'ZincHTTPComponents' with: [
 			  spec
 				  loads: #( 'SSO-OAuth1' );
@@ -44,18 +44,15 @@ BaselineOfTumblrino >> defineDependencies: spec [
 		  spec
 			  loads: #( 'Core' );
 			  repository: 'github://SeasideSt/Seaside/repository' ];
-		
-  baseline: 'SQLite3'
-with:[spec  repository: 'github://pharo-rdbms/Pharo-SQLite3/src'];
-
-
-
+		  baseline: 'SQLite3'
+		  with: [ spec repository: 'github://pharo-rdbms/Pharo-SQLite3/src' ];
 		  "baseline: 'STON-Core'
 					with: [ spec repository: 'github://svenvc/ston/repository' ] ;
 			baseline: 'NeoJSON'
 			with: [ spec
 				loads: 'core';
-				repository: 'github://svenvc/NeoJSON:v17' ]; baseline: 'NeoConsole'
+				repository: 'github://svenvc/NeoJSON:v17' ]; 
+			baseline: 'NeoConsole'
 			with: [ spec repository: 'github://svenvc/NeoConsole:master' ];"
 			  yourself
 ]
@@ -68,7 +65,7 @@ BaselineOfTumblrino >> definePackages: spec [
 		  package: 'CAs-Tumblrino' with: [
 			  spec requires:
 					  #( 'XMLParser' 'NeoJSON' 'ZincHTTPComponents'
-					     'SQLite3' 'Soup') ];
+					     'SQLite3' 'Teapot' 'Soup' ) ];
 		  package: #'CAs-Tumblrino-Gui'
 		  with: [ spec requires: #( 'CAs-Tumblrino' ) ];
 		  package: #'CAs-Tumblrino-Test'
