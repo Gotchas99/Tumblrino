@@ -1,14 +1,16 @@
 Class {
-	#name : #TuTumblrContent,
-	#superclass : #TuTumblrObject,
+	#name : 'TuTumblrContent',
+	#superclass : 'TuTumblrObject',
 	#instVars : [
 		'type',
 		'owner'
 	],
-	#category : #'CAs-Tumblrino-Core'
+	#category : 'CAs-Tumblrino-Core',
+	#package : 'CAs-Tumblrino',
+	#tag : 'Core'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 TuTumblrContent class >> from: aJson [
 
 	| type className |
@@ -17,36 +19,36 @@ TuTumblrContent class >> from: aJson [
 	^ (Smalltalk classNamed:className)  new setJson: aJson
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 TuTumblrContent >> initialize [
 
 	super initialize.
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrContent >> owner:aPost [
 owner:=aPost
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 TuTumblrContent >> parseJson [ 
 super parseJson .type:= json at:#type
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrContent >> saveToFile [
 
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrContent >> setId [
 
-	self id: UUIDGenerator next asString
+	self id: UUID new asString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrContent >> type [
 
 	^ type

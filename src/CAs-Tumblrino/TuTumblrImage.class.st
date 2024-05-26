@@ -1,38 +1,40 @@
 Class {
-	#name : #TuTumblrImage,
-	#superclass : #TuTumblrContent,
+	#name : 'TuTumblrImage',
+	#superclass : 'TuTumblrContent',
 	#instVars : [
 		'media',
 		'form',
 		'forms',
 		'stream'
 	],
-	#category : #'CAs-Tumblrino-Core'
+	#category : 'CAs-Tumblrino-Core',
+	#package : 'CAs-Tumblrino',
+	#tag : 'Core'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrImage >> extent [
 	^ (json at: #width)@(json at:#height)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrImage >> filename [
 	| tmp |
 	tmp := self url asUrl path.
 	^ tmp copyWithout: $/
 ]
 
-{ #category : #gui }
+{ #category : 'gui' }
 TuTumblrImage >> form [
 	^ form ifNil: [ self getForms ]
 ]
 
-{ #category : #gui }
+{ #category : 'gui' }
 TuTumblrImage >> forms [
 	^ forms ifNil: [ self getForms ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrImage >> fullFilename [
 	| tmp root |
 	root := 'D:\Temp\tumblr\Tumblrino' asPath.
@@ -40,7 +42,7 @@ TuTumblrImage >> fullFilename [
 	^ tmp printWithDelimiter: $\
 ]
 
-{ #category : #gui }
+{ #category : 'gui' }
 TuTumblrImage >> getForms [
 
 	"(self url endsWith: '.gif') ifTrue: [
@@ -54,7 +56,7 @@ TuTumblrImage >> getForms [
 	self halt"
 ]
 
-{ #category : #gui }
+{ #category : 'gui' }
 TuTumblrImage >> getStream [
 	| url gifBytes gifStream fref |
 	fref := self fullFilename asFileReference.
@@ -67,21 +69,21 @@ TuTumblrImage >> getStream [
 	^ gifStream
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 TuTumblrImage >> initialize [ 
 super initialize .media:= OrderedCollection new.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 TuTumblrImage >> isGif [
 	^ self url endsWith: '.gif'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrImage >> media [ ^media
 ]
 
-{ #category : #parsing }
+{ #category : 'parsing' }
 TuTumblrImage >> parseJson [
 
 	super parseJson.
@@ -90,11 +92,11 @@ TuTumblrImage >> parseJson [
 	media do:[:m|m owner: self].
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrImage >> path [ ^(owner path / id)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrImage >> saveToFile [
 
 	super saveToFile.
@@ -104,7 +106,7 @@ TuTumblrImage >> saveToFile [
 		m saveToFile ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 TuTumblrImage >> setId [
 
 	| url |
@@ -112,12 +114,12 @@ TuTumblrImage >> setId [
 	self id: url asUrl firstPathSegment
 ]
 
-{ #category : #gui }
+{ #category : 'gui' }
 TuTumblrImage >> stream [
 	^ stream ifNil: [ self getStream ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuTumblrImage >> url [
 	^ json at: #url
 ]

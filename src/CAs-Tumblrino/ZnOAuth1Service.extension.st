@@ -1,6 +1,6 @@
-Extension { #name : #ZnOAuth1Service }
+Extension { #name : 'ZnOAuth1Service' }
 
-{ #category : #'*CAs-Tumblrino' }
+{ #category : '*CAs-Tumblrino' }
 ZnOAuth1Service >> postRequestToken [
 	"special vrsion using POST"
 

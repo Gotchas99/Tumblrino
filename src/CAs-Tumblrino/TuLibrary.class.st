@@ -1,21 +1,28 @@
 Class {
-	#name : #TuLibrary,
-	#superclass : #Object,
+	#name : 'TuLibrary',
+	#superclass : 'Object',
 	#instVars : [
 		'posts'
 	],
 	#classVars : [
 		'Default'
 	],
-	#category : #'CAs-Tumblrino-Core'
+	#category : 'CAs-Tumblrino-Core',
+	#package : 'CAs-Tumblrino',
+	#tag : 'Core'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuLibrary class >> default [
 ^Default ifNil:[Default := self new]
 ]
 
-{ #category : #action }
+{ #category : 'accessing' }
+TuLibrary class >> reset [
+Default:=nil
+]
+
+{ #category : 'action' }
 TuLibrary >> addPost: aPost [
 
 	(posts anySatisfy: [ :p | p id = aPost id ]) ifTrue: [ ^ self ].
@@ -25,13 +32,13 @@ TuLibrary >> addPost: aPost [
 		saveToDb
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuLibrary >> basePath [
 
 	^ 'D:\Temp\TumblrLibrary\' asFileReference
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 TuLibrary >> fetchLikes [
 
 	| api likes |
@@ -44,7 +51,12 @@ TuLibrary >> fetchLikes [
 .self addPost:  l ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'initialization' }
+TuLibrary >> initialize [ 
+posts:=OrderedCollection new. 
+]
+
+{ #category : 'accessing' }
 TuLibrary >> post: anID [
 
 	| post |
@@ -53,7 +65,7 @@ TuLibrary >> post: anID [
 	^ post
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuLibrary >> postDict: anID [
 
 	| post dict |
@@ -67,19 +79,19 @@ TuLibrary >> postDict: anID [
 	^ dict
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuLibrary >> postPath [
 
 	^ self basePath /'_posts'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuLibrary >> posts [
 
 	^posts
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuLibrary >> postsHaving: aTagList butNot: aBlacklist [
 
 	| res ids |
@@ -96,7 +108,7 @@ TuLibrary >> postsHaving: aTagList butNot: aBlacklist [
 	^ ids
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 TuLibrary >> tags [
 
 	| tmp tmp2 tmp3 dict res |

@@ -1,16 +1,18 @@
 Class {
-	#name : #ZipExtraction,
-	#superclass : #Object,
+	#name : 'ZipExtraction',
+	#superclass : 'Object',
 	#instVars : [
 		'mediaFolder',
 		'xmlFolder',
 		'exportPath',
 		'htmlFolder'
 	],
-	#category : #'CAs-Tumblrino-Zip'
+	#category : 'CAs-Tumblrino-Zip',
+	#package : 'CAs-Tumblrino',
+	#tag : 'Zip'
 }
 
-{ #category : #process }
+{ #category : 'process' }
 ZipExtraction >> getPostsFrom: aZipArchiveName [
 
 	| zip postMember postZip posts postsXml html |
@@ -26,7 +28,7 @@ ZipExtraction >> getPostsFrom: aZipArchiveName [
 	html do: [ :h | self saveHtml: h ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 ZipExtraction >> initialize [
 
 	exportPath := TuLibrary default basePath / '_Export'.
@@ -35,12 +37,12 @@ ZipExtraction >> initialize [
 	htmlFolder := (exportPath / 'html') ensureCreateDirectory
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 ZipExtraction >> log: aBlock [
 	WorldState addDeferredUIMessage: [ self traceCr: aBlock value ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 ZipExtraction >> misc [
 
 	| zips zip postMember postZip posts postXml |
@@ -67,7 +69,7 @@ ZipExtraction >> misc [
 	postXml := (posts memberNamed: 'posts.xml') contents asString
 ]
 
-{ #category : #xml }
+{ #category : 'xml' }
 ZipExtraction >> parsePost: pel [
 
 	| dict tags |
@@ -97,7 +99,7 @@ ZipExtraction >> parsePost: pel [
 	^ dict
 ]
 
-{ #category : #process }
+{ #category : 'process' }
 ZipExtraction >> processAllFiles [
 
 	| zips |
@@ -108,7 +110,7 @@ ZipExtraction >> processAllFiles [
 		self saveMediaFrom: z ] 
 ]
 
-{ #category : #html }
+{ #category : 'html' }
 ZipExtraction >> processHTML [
 
 	| frefs postID |
@@ -118,7 +120,7 @@ ZipExtraction >> processHTML [
 		self processHTMLmediaId: postID html: f contents trimmed]
 ]
 
-{ #category : #html }
+{ #category : 'html' }
 ZipExtraction >> processHTMLmediaId: aPostId html: aString [
 
 	| fld f s tags post |
@@ -135,7 +137,7 @@ ZipExtraction >> processHTMLmediaId: aPostId html: aString [
 	self halt "post save"
 ]
 
-{ #category : #xml }
+{ #category : 'xml' }
 ZipExtraction >> processXML [
 
 	| doc top posts postElements p |
@@ -149,37 +151,37 @@ ZipExtraction >> processXML [
 			posts at: (p at: #id) put: p ] ]. ^posts
 ]
 
-{ #category : #xml }
+{ #category : 'xml' }
 ZipExtraction >> processXmlAnswer: pel into: dict [
 ]
 
-{ #category : #xml }
+{ #category : 'xml' }
 ZipExtraction >> processXmlPhoto: pel into: dict [
 
 	"self halt."
 ]
 
-{ #category : #xml }
+{ #category : 'xml' }
 ZipExtraction >> processXmlQuote: pel into: dict [
 ]
 
-{ #category : #xml }
+{ #category : 'xml' }
 ZipExtraction >> processXmlRegular: pel into: dict [
 
 	"self halt."
 ]
 
-{ #category : #xml }
+{ #category : 'xml' }
 ZipExtraction >> processXmlVideo: pel into: dict [
 ]
 
-{ #category : #process }
+{ #category : 'process' }
 ZipExtraction >> saveHtml: aHtmlString [
 
 	aHtmlString extractInDirectory: exportPath overwrite: true
 ]
 
-{ #category : #process }
+{ #category : 'process' }
 ZipExtraction >> saveMediaFrom: aZipArchive [
 
 	| zip |
@@ -198,7 +200,7 @@ ZipExtraction >> saveMediaFrom: aZipArchive [
 						overwrite: false ] ] ]
 ]
 
-{ #category : #process }
+{ #category : 'process' }
 ZipExtraction >> saveXml: anXmlString forZip: aFileRef [
 
 	"doc := XMLDOMParser parse: postsXml.
