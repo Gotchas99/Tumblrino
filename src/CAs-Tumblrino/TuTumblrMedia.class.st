@@ -20,10 +20,39 @@ TuTumblrMedia >> <= other [
 ^self size <= other size
 ]
 
+{ #category : 'action' }
+TuTumblrMedia >> cleanOut [
+
+	type := nil.
+	owner := nil.
+	extent := nil. 
+	path := nil.
+	cropped.
+	origDimension := nil.
+	url := nil
+]
+
+{ #category : 'copying' }
+TuTumblrMedia >> copyFileFrom: mf [
+	"for importing Export-files"
+self assert:  owner path  exists .
+path:= owner path / mf basename.
+self assert:  path  exists not .
+path  exists ifFalse:[	mf copyTo: path.]
+]
+
 { #category : 'testing' }
 TuTumblrMedia >> cropped [
 
 	^ cropped ifNil:[cropped:=json at: #cropped ifAbsent: [ false ]]
+]
+
+{ #category : 'testing' }
+TuTumblrMedia >> exists [
+^
+( path isNotNil or:[url isNotNil])
+	ifTrue:[ self path exists]
+	ifFalse:[false]
 ]
 
 { #category : 'testing' }

@@ -79,17 +79,15 @@ TuTumblrImage >> getStream [
 ]
 
 { #category : 'initialization' }
-TuTumblrImage >> initialize [ 
-super initialize .media:= OrderedCollection new.
+TuTumblrImage >> initialize [
+
+	super initialize.
+	
 ]
 
 { #category : 'testing' }
 TuTumblrImage >> isGif [
 	^ self url endsWith: '.gif'
-]
-
-{ #category : 'accessing' }
-TuTumblrImage >> media [ ^media
 ]
 
 { #category : 'parsing' }

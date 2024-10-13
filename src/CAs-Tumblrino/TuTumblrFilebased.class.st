@@ -9,11 +9,18 @@ Class {
 	#tag : 'Core'
 }
 
+{ #category : 'action' }
+TuTumblrFilebased >> cleanOut [ 
+media do: #cleanOut.
+	media removeAll
+]
+
 { #category : 'copying' }
 TuTumblrFilebased >> copyFileFrom: mf [
 	"for importing Export-files"
-self path exists ifTrue:[^self].
-	mf copyTo: self path.
+
+self path asFileReference ensureCreateDirectory.
+	media first  copyFileFrom: mf
 ]
 
 { #category : 'as yet unclassified' }
@@ -31,6 +38,23 @@ TuTumblrFilebased >> forFile: aFileRef [
 TuTumblrFilebased >> hasBinaryFile: mf [
 
 	^ media anySatisfy: [ :cnt | cnt hasBinaryFile: mf ]
+]
+
+{ #category : 'initialization' }
+TuTumblrFilebased >> initialize [ 
+media := OrderedCollection new
+]
+
+{ #category : 'testing' }
+TuTumblrFilebased >> isEmpty [
+
+	| tmp |
+	tmp := media select: [ :m | m exists ].
+	^ tmp isEmpty
+]
+
+{ #category : 'accessing' }
+TuTumblrFilebased >> media [ ^media
 ]
 
 { #category : 'accessing' }

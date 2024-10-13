@@ -32,6 +32,15 @@ TuTumblrPostNpf >> blogId:anId [
 	blogId:=anId 
 ]
 
+{ #category : 'action' }
+TuTumblrPostNpf >> cleanOut [
+
+	| tmp |
+	tmp := content select: [ :m | m isEmpty ].
+	tmp do: #cleanOut.
+	content removeAll: tmp
+]
+
 { #category : 'accessing' }
 TuTumblrPostNpf >> content [
 

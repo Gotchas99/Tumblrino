@@ -26,12 +26,6 @@ self halt.
 		  filmstrip } anySatisfy: [ :cnt | cnt hasBinaryFile: mf ]
 ]
 
-{ #category : 'accessing' }
-TuTumblrVideo >> media [
-
-	^ media
-]
-
 { #category : 'parsing' }
 TuTumblrVideo >> parseJson [
 
