@@ -53,7 +53,7 @@ TuDB >> close [
 		writeProcess terminate.
 		writeQ flush.
 		db close.
-		self traceCr: 'db closed'.
+		"self traceCr: 'db closed'."
 		db := nil ]
 ]
 
@@ -149,11 +149,12 @@ TuDB >> open [
 	                | msg |
 	                msg := writeQ next.
 	                self traceCr: 'get, writeQ: ' , writeQ size asString.
-	                msg sendTo: self .Processor yield.] repeat.
+	                msg sendTo: self.
+	                Processor yield ] repeat.
 	                self traceCr: 'writeProcess died' ]
 		                forkAt: 33
 		                named: #dbWriter.
-	self traceCr: 'db opened'
+	"self traceCr: 'db opened'"
 ]
 
 { #category : 'testing' }

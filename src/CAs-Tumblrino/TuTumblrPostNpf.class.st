@@ -14,6 +14,13 @@ Class {
 }
 
 { #category : 'accessing' }
+TuTumblrPostNpf >> addContent: aCont [
+
+(content anySatisfy: [:c|c id= aCont id])ifTrue: [ ^self].
+ content add: aCont 
+]
+
+{ #category : 'accessing' }
 TuTumblrPostNpf >> blogId [
 
 	^ blogId ifEmpty: [ blogId:=json at: #blog at: #uuid].
@@ -41,6 +48,12 @@ TuTumblrPostNpf >> dbData [
 	tagString := '|' join: tags. 
 	dict at: #tags put: tagString.
 	^ dict
+]
+
+{ #category : 'testing' }
+TuTumblrPostNpf >> hasBinaryFile: mf [
+
+^content  anySatisfy: [:cnt|cnt hasBinaryFile: mf]
 ]
 
 { #category : 'testing' }
@@ -128,7 +141,9 @@ TuTumblrPostNpf >> parseJson [
 ]
 
 { #category : 'accessing' }
-TuTumblrPostNpf >> path [ ^path
+TuTumblrPostNpf >> path [
+
+	^ path 
 ]
 
 { #category : 'action' }

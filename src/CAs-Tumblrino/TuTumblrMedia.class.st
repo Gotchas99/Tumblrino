@@ -27,6 +27,19 @@ TuTumblrMedia >> cropped [
 ]
 
 { #category : 'testing' }
+TuTumblrMedia >> hasBinaryFile: mf [
+
+	| s1 s2 |
+	path ifNil:[^false].
+	self halt.
+	(path size = mf size)ifFalse:[^false].
+	[s1:= path binaryReadStream.s2:= mf binaryReadStream.
+	[ s1 atEnd ]whileFalse: [ (s1 next = s2 next)ifFalse:[^false]]
+	 ] ensure: [ s1 close.s2 close.].
+^true
+]
+
+{ #category : 'testing' }
 TuTumblrMedia >> hasOriginalDimensions [
 
 	^ origDimension ifNil: [ origDimension := json at: #origDimension ifAbsent: [ false ] ]
@@ -61,15 +74,19 @@ TuTumblrMedia >> path [
 		  path := fref ]
 ]
 
+{ #category : 'accessing' }
+TuTumblrMedia >> path: aPath [
+
+	path := aPath 
+]
+
 { #category : 'action' }
 TuTumblrMedia >> saveToFile [
 
-	| fref |
-	fref := (owner path / url asUrl lastPathSegment) asFileReference.
-	path := fref.
-	fref exists ifTrue: [ ^ self ].
-	self traceCr:  'Saving: ' , fref fullName.
-	url saveContentsToFile: fref
+	self assert: [ owner isNotNil ].
+	self path exists ifTrue: [ ^ self ].
+	self traceCr: 'Saving: ' , path fullName.
+	url saveContentsToFile: path
 ]
 
 { #category : 'accessing' }

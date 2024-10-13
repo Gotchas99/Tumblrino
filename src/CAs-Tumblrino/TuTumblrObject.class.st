@@ -39,7 +39,7 @@ TuTumblrObject >> initialize [
 	json := Dictionary new 
 ]
 
-{ #category : 'initialization' }
+{ #category : 'parsing' }
 TuTumblrObject >> parseJson [
 
 	self setId 

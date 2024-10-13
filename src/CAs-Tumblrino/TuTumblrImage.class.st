@@ -4,7 +4,9 @@ Class {
 	#instVars : [
 		'form',
 		'forms',
-		'stream'
+		'stream',
+		'extent',
+		'url'
 	],
 	#category : 'CAs-Tumblrino-Core',
 	#package : 'CAs-Tumblrino',
@@ -13,7 +15,8 @@ Class {
 
 { #category : 'accessing' }
 TuTumblrImage >> extent [
-	^ (json at: #width)@(json at:#height)
+self halt.
+	^ extent
 ]
 
 { #category : 'accessing' }
@@ -25,12 +28,7 @@ TuTumblrImage >> filename [
 
 { #category : 'initialization' }
 TuTumblrImage >> forFile: aFileRef [
-
-	| ext |
-	self halt.
 	super forFile: aFileRef
-
-
 ]
 
 { #category : 'gui' }
@@ -45,7 +43,9 @@ TuTumblrImage >> forms [
 
 { #category : 'accessing' }
 TuTumblrImage >> fullFilename [
+
 	| tmp root |
+	self halt.
 	root := 'D:\Temp\tumblr\Tumblrino' asPath.
 	tmp := root / self filename.
 	^ tmp printWithDelimiter: $\
@@ -96,29 +96,24 @@ TuTumblrImage >> media [ ^media
 TuTumblrImage >> parseJson [
 
 	super parseJson.
+	"extent := (json at: #width) @ (json at: #height)."
+	"url := json at: #url."
 	media := (json at: #media) collect: [ :each |
 		         TuTumblrMedia from: each ].
-	media do:[:m|m owner: self].
-]
-
-{ #category : 'accessing' }
-TuTumblrImage >> path [ ^(owner path / id)
+	media do: [ :m | m owner: self ]
 ]
 
 { #category : 'accessing' }
 TuTumblrImage >> saveToFile [
 
 	super saveToFile.
-	self path asFileReference ensureCreateDirectory.
-	media do: [ :m |
-		
-		m saveToFile ]
+	media do: [ :m | m saveToFile ]
 ]
 
 { #category : 'initialization' }
 TuTumblrImage >> setId [
 
-	| url |
+	
 	url := (json at: #media) first at: #url.
 	self id: url asUrl firstPathSegment
 ]
@@ -130,5 +125,6 @@ TuTumblrImage >> stream [
 
 { #category : 'accessing' }
 TuTumblrImage >> url [
-	^ json at: #url
+self halt.
+	^ url
 ]

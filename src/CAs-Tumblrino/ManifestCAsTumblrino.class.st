@@ -13,7 +13,7 @@ Class {
 ManifestCAsTumblrino class >> ruleTempsReadBeforeWrittenRuleV1FalsePositive [
 
 	<ignoreForCoverage>
-	^ #(#(#(#RGMethodDefinition #(#TuDB #postExists: #false)) #'2024-02-24T10:12:08.99+01:00') )
+	^ #(#(#(#RGMethodDefinition #(#TuDB #postExists: #false)) #'2024-02-24T10:12:08.99+01:00') #(#(#RGMethodDefinition #(#TuTumblrMedia #hasBinaryFile: #false)) #'2024-09-02T07:42:12.302+02:00') )
 ]
 
 { #category : 'code-critics' }

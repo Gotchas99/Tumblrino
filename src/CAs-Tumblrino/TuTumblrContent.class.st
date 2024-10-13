@@ -10,10 +10,10 @@ Class {
 	#tag : 'Core'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'instance creation' }
 TuTumblrContent class >> forFile: aFileRef [
 
-	| ext |
+	| ext | 
 	ext := aFileRef extension asLowercase.
 	(#( #jpg #jpeg #png #gif ) includes: ext) ifTrue: [
 		^ TuTumblrImage new forFile: aFileRef ].
@@ -43,7 +43,7 @@ TuTumblrContent >> owner:aPost [
 owner:=aPost
 ]
 
-{ #category : 'initialization' }
+{ #category : 'parsing' }
 TuTumblrContent >> parseJson [ 
 super parseJson .type:= json at:#type
 ]
@@ -51,7 +51,7 @@ super parseJson .type:= json at:#type
 { #category : 'accessing' }
 TuTumblrContent >> saveToFile [
 
-	
+	self assert: [ owner isNotNil ]
 ]
 
 { #category : 'accessing' }

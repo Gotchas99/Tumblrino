@@ -17,6 +17,15 @@ TuTumblrVideo >> forFile: aFileRef [
 	self halt.	super forFile: aFileRef
 ]
 
+{ #category : 'testing' }
+TuTumblrVideo >> hasBinaryFile: mf [
+self halt.
+	^ {
+		  media.
+		  poster.
+		  filmstrip } anySatisfy: [ :cnt | cnt hasBinaryFile: mf ]
+]
+
 { #category : 'accessing' }
 TuTumblrVideo >> media [
 
@@ -44,6 +53,8 @@ TuTumblrVideo >> saveToFile [
 	{
 		poster.
 		filmstrip.
-		media } do: [ :each | each ifNotNil: [ each owner: owner.each saveToFile ] ].
-
+		media } do: [ :each |
+		each ifNotNil: [
+			each owner: owner.
+			each saveToFile ] ]
 ]

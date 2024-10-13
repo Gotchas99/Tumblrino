@@ -16,9 +16,8 @@ Class {
 ZipExtraction >> createContentFor: aFref [
 
 	| cont |
-	self halt.
-	cont:= TuTumblrContent forFile: aFref ..
-	^cont.
+	cont := TuTumblrContent forFile: aFref. 
+	^ cont
 ]
 
 { #category : 'process' }
@@ -132,8 +131,8 @@ ZipExtraction >> processHTML [
 { #category : 'html' }
 ZipExtraction >> processHTMLmediaId: aPostId html: aString [
 
-	| fld mediaFiles s tags post cont |
-	fld := TuLibrary default basePath / '_Export' / #html.
+	| mediaFiles s tags post cont |
+	"fld := TuLibrary default basePath / '_Export' / #html."
 	"-------------------"
 	s := Soup fromString: aString.
 	tags := (s // 'span'
@@ -142,9 +141,17 @@ ZipExtraction >> processHTMLmediaId: aPostId html: aString [
 	post := TuLibrary default post: aPostId.
 	post tags ifEmpty: [ post tags: tags ].
 	post path ensureCreateDirectory.
-"post save"
+	"can't save, since no content
+	post save."
 	mediaFiles := mediaFolder filesMatching: aPostId , '*'.
-	mediaFiles do: [ :mf | cont:= self  createContentFor: mf.cont owner:post].self halt.
+	mediaFiles do: [ :mf |
+		(post hasBinaryFile: mf) ifFalse: [
+			cont := self createContentFor: mf.
+			cont owner: post .
+			cont copyFileFrom:mf.
+			post addContent: cont.
+			post save] ]. 
+	self halt
 ]
 
 { #category : 'xml' }
