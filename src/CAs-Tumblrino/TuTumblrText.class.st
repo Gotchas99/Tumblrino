@@ -9,6 +9,12 @@ Class {
 	#tag : 'Core'
 }
 
+{ #category : 'testing' }
+TuTumblrText >> isEmpty [
+
+	^ self text isEmptyOrNil 
+]
+
 { #category : 'accessing' }
 TuTumblrText >> saveToFile [
 	super saveToFile.

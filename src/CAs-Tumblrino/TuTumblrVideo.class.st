@@ -26,6 +26,12 @@ self halt.
 		  filmstrip } anySatisfy: [ :cnt | cnt hasBinaryFile: mf ]
 ]
 
+{ #category : 'testing' }
+TuTumblrVideo >> isEmpty [
+^(media isNil) or:[media exists not]
+
+]
+
 { #category : 'parsing' }
 TuTumblrVideo >> parseJson [
 

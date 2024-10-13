@@ -1,7 +1,13 @@
 Class {
 	#name : 'TuTumblrAudio',
-	#superclass : 'TuTumblrFilebased',
+	#superclass : 'TuTumblrContent',
 	#category : 'CAs-Tumblrino-Core',
 	#package : 'CAs-Tumblrino',
 	#tag : 'Core'
 }
+
+{ #category : 'testing' }
+TuTumblrAudio >> isEmpty [
+
+	^true
+]

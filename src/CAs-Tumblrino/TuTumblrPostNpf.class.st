@@ -106,6 +106,14 @@ TuTumblrPostNpf >> initialize [
 ]
 
 { #category : 'testing' }
+TuTumblrPostNpf >> isEmpty [
+
+	| tmp |
+	tmp := content reject: #isEmpty .
+	^ tmp isEmpty
+]
+
+{ #category : 'testing' }
 TuTumblrPostNpf >> isHidden [ 
 
 	^ hidden ifNil:[false]
