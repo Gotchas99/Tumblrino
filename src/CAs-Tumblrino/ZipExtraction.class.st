@@ -132,8 +132,7 @@ ZipExtraction >> processHTML [
 ZipExtraction >> processHTMLmediaId: aPostId html: aString [
 
 	| mediaFiles s tags post cont |
-	"fld := TuLibrary default basePath / '_Export' / #html."
-	"-------------------"
+	"fld := TuLibrary default basePath / '_Export' / #html.""-------------------"
 	s := Soup fromString: aString.
 	tags := (s // 'span'
 		         select: [ :t | t @ #class = #tag ]
@@ -144,13 +143,14 @@ ZipExtraction >> processHTMLmediaId: aPostId html: aString [
 	"can't save, since no content
 	post save."
 	mediaFiles := mediaFolder filesMatching: aPostId , '*'.
+	self halt.
 	mediaFiles do: [ :mf |
 		(post hasBinaryFile: mf) ifFalse: [
 			cont := self createContentFor: mf.
-			cont owner: post .
-			cont copyFileFrom:mf.
+			cont owner: post.
+			cont copyFileFrom: mf.
 			post addContent: cont.
-			post save] ]. 
+			post save ] ].
 	self halt
 ]
 

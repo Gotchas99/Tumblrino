@@ -59,13 +59,16 @@ TuTumblrMedia >> exists [
 TuTumblrMedia >> hasBinaryFile: mf [
 
 	| s1 s2 |
-	path ifNil:[^false].
-	self halt.
-	(path size = mf size)ifFalse:[^false].
-	[s1:= path binaryReadStream.s2:= mf binaryReadStream.
-	[ s1 atEnd ]whileFalse: [ (s1 next = s2 next)ifFalse:[^false]]
-	 ] ensure: [ s1 close.s2 close.].
-^true
+	path ifNil: [ ^ false ].
+	path size = mf size ifFalse: [ ^ false ].
+	[
+	s1 := path binaryReadStream.
+	s2 := mf binaryReadStream.
+	[ s1 atEnd ] whileFalse: [ s1 next = s2 next ifFalse: [ ^ false ] ] ]
+		ensure: [
+			s1 close.
+			s2 close ].
+	^ true
 ]
 
 { #category : 'testing' }
