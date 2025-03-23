@@ -172,11 +172,10 @@ TuTumblrPostNpf >> save [
 
 { #category : 'action' }
 TuTumblrPostNpf >> saveToDb [
-	"	TuDB default writePost: self"
-
+	
 	| msg |
 	msg := Message selector: #writePost: argument: self dbData.
-	TuDB default queueWrite: msg.
+	TuDB default queueWrite: msg
 ]
 
 { #category : 'action' }

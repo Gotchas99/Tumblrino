@@ -13,11 +13,11 @@ Class {
 { #category : 'instance creation' }
 TuTumblrContent class >> forFile: aFileRef [
 
-	| ext | 
+	| ext |
 	ext := aFileRef extension asLowercase.
 	(#( #jpg #jpeg #png #gif ) includes: ext) ifTrue: [
 		^ TuTumblrImage new forFile: aFileRef ].
-	(#( #mp4 ) includes: ext) ifTrue: [
+	(#( #mp4 ) includes: ext) ifTrue: [self halt.
 		^ TuTumblrVideo new forFile: aFileRef ].
 	Error signal: 'unknown file extension'
 ]

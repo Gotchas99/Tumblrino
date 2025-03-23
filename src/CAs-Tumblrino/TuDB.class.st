@@ -48,10 +48,9 @@ self default ensureLibrary .
 
 { #category : 'connection handling' }
 TuDB >> close [
-
-	db ifNotNil: [
+writeQ ifNotNil:[writeQ flush.writeQ :=nil].
+			db ifNotNil: [
 		writeProcess terminate.
-		writeQ flush.
 		db close.
 		"self traceCr: 'db closed'."
 		db := nil ]
@@ -73,11 +72,11 @@ TuDB >> conn [ ^conn
 TuDB >> createPosts [
 
 	(self tableExists: #posts) ifTrue: [ ^ self ].
-	conn execute: 'create table posts(id INTEGER PRIMARY KEY
+	conn execute: 'create table posts(
+		id INTEGER PRIMARY KEY
 		, blog_id TEXT
 		, tags TEXT
 	 )'
-
 ]
 
 { #category : 'accessing' }
@@ -131,10 +130,19 @@ TuDB >> ensureLibrary [
 	fromName copyTo: toName
 ]
 
+{ #category : 'operations' }
+TuDB >> getWrite [
+
+	| msg |
+	msg := writeQ next.
+	self traceCr: 'get, writeQ: ' , writeQ size asString.
+	msg sendTo: self.
+	^ Processor yield
+]
+
 { #category : 'initialization' }
 TuDB >> initialize [
 
-	writeQ := AtomicSharedQueue new.
 
 ]
 
@@ -142,18 +150,14 @@ TuDB >> initialize [
 TuDB >> open [
 
 	db ifNotNil: [ db connection isOpen ifTrue: [ ^ self ] ].
+		writeQ := AtomicSharedQueue new.
 	db := SQLite3Database openOn: self dbFilename pathString.
 	conn := db connection.
 	writeProcess := [
-	                [
-	                | msg |
-	                msg := writeQ next.
-	                self traceCr: 'get, writeQ: ' , writeQ size asString.
-	                msg sendTo: self.
-	                Processor yield ] repeat.
+	                [ self getWrite ] repeat.
 	                self traceCr: 'writeProcess died' ]
 		                forkAt: 33
-		                named: #dbWriter.
+		                named: #dbWriter
 	"self traceCr: 'db opened'"
 ]
 
@@ -170,7 +174,8 @@ TuDB >> postExists: aPostId [
 TuDB >> queueWrite: aMsg [
 
 	writeQ nextPut: aMsg.
-	self traceCr: 'add, writeQ: ' , writeQ size asString.Processor yield.
+	"self traceCr: 'add, writeQ: ' , writeQ size asString."
+	Processor yield
 ]
 
 { #category : 'schema' }

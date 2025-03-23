@@ -35,10 +35,10 @@ TuTumblrMedia >> cleanOut [
 { #category : 'copying' }
 TuTumblrMedia >> copyFileFrom: mf [
 	"for importing Export-files"
-self assert:  owner path  exists .
-path:= owner path / mf basename.
-self assert:  path  exists not .
-path  exists ifFalse:[	mf copyTo: path.]
+	self assert: owner path exists.
+	path := owner path / mf basename.
+	self assert: path exists not.
+	path exists ifFalse: [ mf copyTo: path ]
 ]
 
 { #category : 'testing' }

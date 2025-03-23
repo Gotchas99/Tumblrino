@@ -51,6 +51,15 @@ TuLibrary >> fetchLikes [
 .self addPost:  l ] ]
 ]
 
+{ #category : 'action' }
+TuLibrary >> fetchLikesAsync [
+
+	[
+	self traceCr: 'getLikes Start'.
+	self fetchLikes.
+	self traceCr: 'getLikes Done' ] fork
+]
+
 { #category : 'initialization' }
 TuLibrary >> initialize [ 
 posts:=OrderedCollection new. 

@@ -19,11 +19,14 @@ TuTumblrVideo >> forFile: aFileRef [
 
 { #category : 'testing' }
 TuTumblrVideo >> hasBinaryFile: mf [
-self halt.
-	^ {
-		  media.
-		  poster.
-		  filmstrip } anySatisfy: [ :cnt | cnt hasBinaryFile: mf ]
+
+	| tmp |
+	self halt.
+	tmp := ({
+		        media.
+		        poster.
+		        filmstrip } reject: [ :each | each isNil ]) flattened.
+	^ tmp anySatisfy: [ :cont | cont hasBinaryFile: mf ]
 ]
 
 { #category : 'testing' }
